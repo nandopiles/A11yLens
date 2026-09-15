@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AccessLens — Inspector &amp; Simulador A11y</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface": "#faf8ff",
+            "surface-dim": "#d2d9f4",
+            "surface-bright": "#faf8ff",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low": "#f2f3ff",
+            "surface-container": "#eaedff",
+            "surface-container-high": "#e2e7ff",
+            "surface-container-highest": "#dae2fd",
+            "on-surface": "#131b2e",
+            "on-surface-variant": "#434655",
+            "outline": "#747686",
+            "outline-variant": "#c4c5d7",
+            "primary": "#0037b0",
+            "primary-container": "#1d4ed8",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#cad3ff",
+            "secondary": "#4e45d5",
+            "secondary-container": "#6860ef",
+            "on-secondary": "#ffffff",
+            "tertiary": "#7f2500",
+            "tertiary-container": "#a73400",
+            "error": "#ba1a1a",
+            "error-container": "#ffdad6"
+          },
+          fontFamily: {
+            sans: ["Geist", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body { font-feature-settings: "cv02", "cv03", "cv04", "cv11"; }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20; }
+  </style>
+</head>
+<body class="min-h-full bg-slate-50 text-slate-900 font-sans antialiased selection:bg-blue-100 selection:text-blue-900">
+<!-- Minimal Header / Top Navigation -->
+<header class="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/95 backdrop-blur-sm">
+<div class="max-w-7xl mx-auto h-14 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+<div class="flex items-center gap-6">
+<a class="flex items-center gap-2.5 group" href="#">
+<img alt="AccessLens" class="w-7 h-7 rounded object-cover shadow-xs" src="https://lh3.googleusercontent.com/aida/AEtjO1U05iEppvDem0-Rtb-DCHACOVw7aq64GObyhLLb_OkLcaIwNhMtubKUT2Rc2B83l5hov6EmPbzwiaJnWjAY3x9T6FPBl39nyWrlf2CJRopNWrAT6Wktz6gQOlO0AaMfFi2TMgW5SpOJ_7MEapDGw1_R5YMV0AdyMyz0_uuruvMs1R3HyZp-Ylzn_JHErcKIbJ71JXlwyMI04bX4X5xEHs46lh8f7sxaOCf8iIrTfr8sRy4UKjRuczz_ehY"/>
+<div class="flex items-baseline gap-2">
+<span class="text-sm font-semibold tracking-tight text-slate-900">AccessLens</span>
+<span class="text-[11px] font-mono text-slate-500 font-medium">v2.4</span>
+</div>
+</a>
+<div class="hidden sm:block h-4 w-px bg-slate-200"></div>
+<nav class="hidden md:flex items-center gap-1 text-[13px] font-medium text-slate-600">
+<a class="px-2.5 py-1.5 rounded text-slate-900 bg-slate-100 font-medium" href="#">Inicio</a>
+<a class="px-2.5 py-1.5 rounded hover:text-slate-900 hover:bg-slate-50 transition-colors" href="#casos-de-uso">Casos de Uso</a>
+<a class="px-2.5 py-1.5 rounded hover:text-slate-900 hover:bg-slate-50 transition-colors" href="#mockup-interactive">Simulador en Vivo</a>
+<a class="px-2.5 py-1.5 rounded hover:text-slate-900 hover:bg-slate-50 transition-colors" href="#perfiles">Perfiles</a>
+<a class="px-2.5 py-1.5 rounded hover:text-slate-900 hover:bg-slate-50 transition-colors" href="#">Auditoría Técnica</a>
+</nav>
+</div>
+<div class="flex items-center gap-3">
+<div class="hidden lg:flex items-center gap-1.5 px-2.5 py-1 rounded border border-emerald-200 bg-emerald-50/60 text-emerald-800 text-xs font-mono">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+<span class="font-semibold">WCAG 2.2 AAA</span>
+<span class="text-emerald-700">Target</span>
+</div>
+<button class="inline-flex items-center gap-1.5 text-xs font-medium text-white bg-slate-900 hover:bg-slate-800 active:bg-slate-950 px-3 py-1.5 rounded border border-slate-900 shadow-xs transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">bolt</span>
+<span>Nueva Simulación</span>
+</button>
+<div class="flex items-center pl-1 border-l border-slate-200">
+<img alt="Perfil" class="w-7 h-7 rounded-full object-cover border border-slate-200" src="https://lh3.googleusercontent.com/aida/AEtjO1XcgzLZE5aKEiRpUpPW6xb8FPrZQtfN6AYLhTg2c1LfKSJYPNn2DxV7Q-mXl_5ZoYLLpSpOl2Von-vl6d6JVlKvj08VQajXN-zzx_3nJJzxz3yG1krGdGThrEcqvCAQ7yvdKAeScSXV1Hj7ddSAZsCNgHxT2evQftP_jMXBDDZxeQ0erX9Z8XkD1odpWi5nlFtHf_DbUqB41p4U-lvid7L-mfje5ZfvNa2LPrnXY06HBqeGlGdmTKnS0g"/>
+</div>
+</div>
+</div>
+</header>
+<main class="w-full">
+<!-- Hero Section -->
+<section class="border-b border-slate-200 bg-white">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-16 text-center">
+<!-- Eyebrow Tag -->
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded border border-slate-200 bg-slate-50 text-slate-700 text-xs font-mono font-medium mb-6">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span>Herramienta Interactiva de Empatía Digital y Cumplimiento WCAG 2.2</span>
+</div>
+<!-- H1 sober and clear -->
+<h1 class="text-3xl sm:text-5xl font-semibold tracking-tight text-slate-950 max-w-3xl mx-auto leading-tight sm:leading-tight">
+          Vive lo que otros viven al <span class="text-blue-700">navegar la web</span>
+</h1>
+<!-- Subtitle -->
+<p class="mt-4 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          Experimenta en primera persona cómo personas con diversas capacidades visuales, motrices y cognitivas interactúan con productos digitales antes de lanzar a producción.
+        </p>
+<!-- CTA Buttons -->
+<div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+<a class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-700 hover:bg-blue-800 rounded border border-blue-800 shadow-xs transition-colors" href="#mockup-interactive">
+<span class="material-symbols-outlined text-lg">play_circle</span>
+<span>Probar una simulación interactiva</span>
+</a>
+<a class="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-slate-700 bg-white hover:bg-slate-50 rounded border border-slate-300 transition-colors" href="#casos-de-uso">
+<span class="material-symbols-outlined text-lg text-slate-500">explore</span>
+<span>Explorar Casos de Estudio</span>
+</a>
+</div>
+<!-- Metrics Strip (Clean GitHub/Linear style table grid) -->
+<div class="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-px bg-slate-200 border border-slate-200 rounded overflow-hidden text-left bg-white">
+<div class="bg-white p-4">
+<div class="text-[11px] font-mono uppercase tracking-wider text-slate-500 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-emerald-600">check_circle</span> Motor WCAG
+            </div>
+<div class="text-xl font-semibold text-slate-900 mt-1">2.2 AAA</div>
+<div class="text-xs text-slate-500 mt-0.5">100% Cobertura sintética</div>
+</div>
+<div class="bg-white p-4">
+<div class="text-[11px] font-mono uppercase tracking-wider text-slate-500 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-blue-600">sensors</span> Latencia Media
+            </div>
+<div class="text-xl font-semibold text-slate-900 mt-1">1.8 ms</div>
+<div class="text-xs text-slate-500 mt-0.5">Sin recargar página</div>
+</div>
+<div class="bg-white p-4">
+<div class="text-[11px] font-mono uppercase tracking-wider text-slate-500 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-indigo-600">diversity_1</span> Perfiles Activos
+            </div>
+<div class="text-xl font-semibold text-slate-900 mt-1">18+</div>
+<div class="text-xs text-slate-500 mt-0.5">Visual, motor &amp; cognitivo</div>
+</div>
+<div class="bg-white p-4">
+<div class="text-[11px] font-mono uppercase tracking-wider text-slate-500 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-slate-600">bug_report</span> Detección Zero
+            </div>
+<div class="text-xl font-semibold text-slate-900 mt-1">94.2%</div>
+<div class="text-xs text-slate-500 mt-0.5">Falsos positivos reducidos</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION: Comparativa Interactiva (Split View) -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14" id="mockup-interactive">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between pb-4 border-b border-slate-200 mb-6 gap-3">
+<div>
+<span class="text-xs font-mono uppercase tracking-wider text-blue-700 font-medium">Laboratorio de Inspección A11y</span>
+<h2 class="text-xl font-semibold text-slate-900 mt-1">Comparativa en Tiempo Real: Flujo de Pago</h2>
+</div>
+<div class="inline-flex items-center gap-2 text-xs font-mono text-slate-600 bg-slate-100 px-2.5 py-1 rounded border border-slate-200">
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+<span>Filtro aplicado: Tritanopia + Temblor de Manos 8Hz</span>
+</div>
+</div>
+<!-- Comparative Container Box (Clean frame, subtle 1px border) -->
+<div class="border border-slate-200 rounded bg-white shadow-xs overflow-hidden" id="comparator-box">
+<!-- Mock Browser Chrome Bar -->
+<div class="flex items-center justify-between px-3 py-2 border-b border-slate-200 bg-slate-50 text-slate-600 text-xs font-mono">
+<div class="flex items-center gap-2">
+<span class="flex gap-1.5">
+<span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+<span class="w-2.5 h-2.5 rounded-full bg-slate-300"></span>
+</span>
+<span class="text-slate-400">|</span>
+<span class="text-slate-600">https://checkout.retail-demo.dev/order/review</span>
+</div>
+<span class="hidden sm:inline text-slate-500 text-[11px]">Arrastra la barra vertical para comparar</span>
+</div>
+<!-- Viewport -->
+<div class="relative w-full h-[460px] select-none bg-white overflow-hidden">
+<!-- LEFT / BASE VIEW: Navegación Típica -->
+<div class="absolute inset-0 w-full h-full p-6 sm:p-8 flex flex-col justify-between bg-white text-slate-900">
+<!-- App header inside frame -->
+<div class="flex justify-between items-center pb-4 border-b border-slate-100">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded bg-slate-900 text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">shopping_bag</span>
+</div>
+<span class="text-sm font-semibold text-slate-900">Lumina Store</span>
+</div>
+<span class="text-xs font-mono text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded">Paso 3 de 3 • Revisión</span>
+</div>
+<!-- Main Checkout Content -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto max-w-3xl w-full mx-auto">
+<!-- Payment Info -->
+<div class="p-4 rounded border border-slate-200 bg-slate-50/50 space-y-3">
+<div class="flex justify-between items-center text-xs">
+<span class="font-medium text-slate-700">Método de Pago</span>
+<span class="font-mono text-blue-700 font-semibold text-[11px]">TARJETA CRÉDITO</span>
+</div>
+<div class="p-2.5 rounded bg-white border border-slate-200 space-y-1">
+<div class="text-[10px] font-mono uppercase text-slate-500">Número de Tarjeta</div>
+<div class="font-mono text-sm tracking-wider text-slate-900">•••• •••• •••• 9842</div>
+</div>
+<div class="grid grid-cols-2 gap-2 text-xs">
+<div class="p-2 rounded bg-white border border-slate-200">
+<span class="text-[10px] font-mono text-slate-500 block">Vencimiento</span>
+<span class="font-mono font-medium text-slate-900">09 / 28</span>
+</div>
+<div class="p-2 rounded bg-white border border-slate-200">
+<span class="text-[10px] font-mono text-slate-500 block">CVC Seguro</span>
+<span class="font-mono font-medium text-slate-900">391</span>
+</div>
+</div>
+</div>
+<!-- Order Summary -->
+<div class="p-4 rounded border border-slate-200 bg-white flex flex-col justify-between">
+<div class="space-y-2 text-xs">
+<div class="flex justify-between text-slate-600">
+<span>Subtotal (2 artículos)</span>
+<span class="font-medium text-slate-900">$129.00 USD</span>
+</div>
+<div class="flex justify-between text-slate-600">
+<span>Envío Certificado Express</span>
+<span class="font-medium text-emerald-700">GRATIS</span>
+</div>
+<div class="pt-2 border-t border-slate-100 flex justify-between text-sm font-semibold text-slate-900">
+<span>Total a Pagar</span>
+<span class="text-blue-700">$129.00 USD</span>
+</div>
+</div>
+<button class="mt-4 w-full py-2 px-3 rounded bg-blue-700 hover:bg-blue-800 text-white text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+<span>Confirmar y Pagar Orden</span>
+</button>
+</div>
+</div>
+<!-- Bottom State Indicator -->
+<div class="pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] font-mono text-slate-500">
+<span class="text-emerald-700 font-medium">● VISTA ORIGINAL: Navegación Típica (20/20)</span>
+<span>WCAG 2.2 Compliant</span>
+</div>
+</div>
+<!-- RIGHT / SIMULATED VIEW (Clipped with dynamic slider) -->
+<div class="absolute inset-0 h-full overflow-hidden pointer-events-none bg-slate-100/90 text-slate-700" id="simulated-layer" style="clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%); filter: contrast(0.9) saturate(0.4) hue-rotate(180deg);">
+<div class="absolute inset-0 w-full h-full p-6 sm:p-8 flex flex-col justify-between bg-slate-100">
+<div class="flex justify-between items-center pb-4 border-b border-slate-300">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded bg-slate-700 text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">shopping_bag</span>
+</div>
+<span class="text-sm font-semibold text-slate-800">Lumina Store</span>
+</div>
+<span class="text-xs font-mono text-slate-700 bg-slate-200 border border-slate-300 px-2 py-0.5 rounded">Paso 3 • Bajo Visión</span>
+</div>
+<!-- Altered Simulation Form (Tritanopia + Tremor) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto max-w-3xl w-full mx-auto">
+<div class="p-4 rounded border border-slate-300 bg-slate-200/60 space-y-3 blur-[0.4px]">
+<div class="flex justify-between items-center text-xs">
+<span class="font-medium text-slate-700">Método de Pago</span>
+<span class="font-mono text-red-700 font-semibold text-[11px]">COLOR INDISTINGUIBLE</span>
+</div>
+<div class="p-2.5 rounded bg-slate-100 border border-slate-300 space-y-1">
+<div class="text-[10px] font-mono uppercase text-slate-500">Número de Tarjeta</div>
+<div class="font-mono text-sm tracking-wider text-slate-700">•••• •••• •••• 9842</div>
+</div>
+<div class="grid grid-cols-2 gap-2 text-xs">
+<div class="p-2 rounded bg-slate-100 border border-slate-300">
+<span class="text-[10px] font-mono text-slate-500 block">Vencimiento</span>
+<span class="font-mono font-medium text-slate-700">09 / 28</span>
+</div>
+<div class="p-2 rounded bg-slate-100 border border-slate-300">
+<span class="text-[10px] font-mono text-slate-500 block">CVC Seguro</span>
+<span class="font-mono font-medium text-slate-700">391</span>
+</div>
+</div>
+</div>
+<div class="p-4 rounded border border-slate-300 bg-slate-200/50 flex flex-col justify-between">
+<div class="space-y-2 text-xs">
+<div class="flex justify-between text-slate-600">
+<span>Subtotal</span>
+<span class="font-medium text-slate-800">$129.00 USD</span>
+</div>
+<div class="flex justify-between text-slate-500">
+<span>Envío Express</span>
+<span class="text-slate-600 font-medium">GRATIS (Contraste 2.1:1)</span>
+</div>
+<div class="pt-2 border-t border-slate-300 flex justify-between text-sm font-semibold text-slate-800">
+<span>Total</span>
+<span>$129.00 USD</span>
+</div>
+</div>
+<div class="relative mt-4">
+<div class="absolute -top-3 -right-2 z-20 flex items-center gap-1">
+<span class="w-2.5 h-2.5 rounded-full bg-red-600"></span>
+<span class="text-[10px] font-mono bg-red-100 text-red-900 border border-red-300 px-1.5 py-0.5 rounded">Clic erróneo detectado</span>
+</div>
+<button class="w-full py-2 px-3 rounded bg-slate-400 text-slate-900 text-xs font-semibold flex items-center justify-center gap-1.5 opacity-90" type="button">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+<span>Confirmar y Pagar Orden</span>
+</button>
+</div>
+</div>
+</div>
+<div class="pt-3 border-t border-slate-300 flex items-center justify-end text-[11px] font-mono text-red-800">
+<span>▲ SIMULACIÓN: Tritanopia + Temblor Esencial (8Hz Jitter)</span>
+</div>
+</div>
+</div>
+<!-- Divider Slider Line & Handle -->
+<div class="absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-px bg-slate-400 hover:bg-blue-600 cursor-ew-resize z-30 flex items-center justify-center group" id="divider-handle">
+<div class="w-6 h-9 rounded bg-white border border-slate-300 text-slate-500 shadow-sm flex items-center justify-center group-hover:border-blue-600 group-hover:text-blue-600 transition-colors">
+<span class="material-symbols-outlined text-[16px]">drag_indicator</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION: Casos de Uso Preconfigurados (Clean Cards) -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-slate-200" id="casos-de-uso">
+<div class="flex flex-col sm:flex-row sm:items-end justify-between pb-6 mb-6 gap-3">
+<div>
+<span class="text-xs font-mono uppercase tracking-wider text-slate-500 font-medium">Entornos de Pruebas</span>
+<h2 class="text-xl font-semibold text-slate-900 mt-1">Casos de Uso Preconfigurados</h2>
+<p class="text-sm text-slate-600 mt-1 max-w-xl">
+            Aisla fricciones reales en componentes críticos antes de impactar conversiones o generar multas de accesibilidad.
+          </p>
+</div>
+<div class="inline-flex items-center gap-1.5 text-xs font-mono text-slate-600 bg-white border border-slate-200 px-2.5 py-1 rounded">
+<span class="material-symbols-outlined text-sm text-emerald-600">verified</span>
+<span>Actualizados a WCAG 2.2 Success Criteria</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Card 1 -->
+<div class="p-5 rounded border border-slate-200 bg-white hover:border-slate-300 transition-colors flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3">
+<div class="w-8 h-8 rounded border border-slate-200 bg-slate-50 flex items-center justify-center text-slate-700">
+<span class="material-symbols-outlined text-lg">credit_card</span>
+</div>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded border border-rose-200 bg-rose-50 text-rose-800 font-medium">
+                Dificultad: Alta
+              </span>
+</div>
+<h3 class="text-base font-semibold text-slate-900">Formulario de Checkout Exprés</h3>
+<p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+              Pasarela de pago transaccional, campos autofill y validación de tarjetas bajo estrés motor severo, micro-temblores y límites de tiempo arbitrarios.
+            </p>
+<div class="flex flex-wrap gap-1.5 mt-4">
+<span class="text-[11px] font-mono px-2 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-600">Target Size (2.5.8)</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-600">Timing Adjustable (2.2.1)</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-600">Error Identification (3.3.1)</span>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+<span class="font-mono text-slate-500">Escenario #01 • E-Commerce</span>
+<button class="inline-flex items-center gap-1 font-medium text-blue-700 hover:text-blue-800" type="button">
+<span>Abrir Caso</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="p-5 rounded border border-slate-200 bg-white hover:border-slate-300 transition-colors flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3">
+<div class="w-8 h-8 rounded border border-slate-200 bg-slate-50 flex items-center justify-center text-slate-700">
+<span class="material-symbols-outlined text-lg">dynamic_feed</span>
+</div>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded border border-amber-200 bg-amber-50 text-amber-800 font-medium">
+                Dificultad: Media
+              </span>
+</div>
+<h3 class="text-base font-semibold text-slate-900">Feed Social Dinámico</h3>
+<p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+              Consumo de multimedia en scroll infinito continuo, superposición crítica de texto sobre fotografías con bajo contraste y análisis de subtitulado sincronizado.
+            </p>
+<div class="flex flex-wrap gap-1.5 mt-4">
+<span class="text-[11px] font-mono px-2 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-600">Contrast Minimum (1.4.3)</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-600">Captions Live (1.2.4)</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-600">Pause, Stop, Hide (2.2.2)</span>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+<span class="font-mono text-slate-500">Escenario #02 • Social &amp; Media</span>
+<button class="inline-flex items-center gap-1 font-medium text-blue-700 hover:text-blue-800" type="button">
+<span>Abrir Caso</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="p-5 rounded border border-slate-200 bg-white hover:border-slate-300 transition-colors flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3">
+<div class="w-8 h-8 rounded border border-slate-200 bg-slate-50 flex items-center justify-center text-slate-700">
+<span class="material-symbols-outlined text-lg">keyboard</span>
+</div>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded border border-rose-200 bg-rose-50 text-rose-800 font-medium">
+                Dificultad: Alta
+              </span>
+</div>
+<h3 class="text-base font-semibold text-slate-900">Menú de Navegación Complejo</h3>
+<p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+              Mega-menú multinivel con subcategorías anidadas operado exclusivamente vía teclado (`Tab`, `Shift+Tab`, flechas) sin trampas de foco y con saltos directos.
+            </p>
+<div class="flex flex-wrap gap-1.5 mt-4">
+<span class="text-[11px] font-mono px-2 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-600">Keyboard Navigation (2.1.1)</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-600">No Keyboard Trap (2.1.2)</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-600">Focus Order (2.4.3)</span>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+<span class="font-mono text-slate-500">Escenario #03 • Enterprise Portal</span>
+<button class="inline-flex items-center gap-1 font-medium text-blue-700 hover:text-blue-800" type="button">
+<span>Abrir Caso</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="p-5 rounded border border-slate-200 bg-white hover:border-slate-300 transition-colors flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-3">
+<div class="w-8 h-8 rounded border border-slate-200 bg-slate-50 flex items-center justify-center text-slate-700">
+<span class="material-symbols-outlined text-lg">finance</span>
+</div>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded border border-blue-200 bg-blue-50 text-blue-800 font-medium">
+                Dificultad: Intermedia
+              </span>
+</div>
+<h3 class="text-base font-semibold text-slate-900">Dashboard de Analítica &amp; Gráficos</h3>
+<p class="text-xs text-slate-600 mt-1.5 leading-relaxed">
+              Diagramas de dispersión y series temporales multicolores que dependen de patrons o texturas alternativas para usuarios con acromatopsia y baja visión.
+            </p>
+<div class="flex flex-wrap gap-1.5 mt-4">
+<span class="text-[11px] font-mono px-2 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-600">Use of Color (1.4.1)</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-600">Non-text Contrast (1.4.11)</span>
+<span class="text-[11px] font-mono px-2 py-0.5 rounded border border-slate-200 bg-slate-50 text-slate-600">Info &amp; Relationships (1.3.1)</span>
+</div>
+</div>
+<div class="pt-4 mt-4 border-t border-slate-100 flex items-center justify-between text-xs">
+<span class="font-mono text-slate-500">Escenario #04 • SaaS Analytics</span>
+<button class="inline-flex items-center gap-1 font-medium text-blue-700 hover:text-blue-800" type="button">
+<span>Abrir Caso</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION: Perfiles de Simulación Biomimética -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 border-t border-slate-200" id="perfiles">
+<div class="max-w-2xl mb-8">
+<span class="text-xs font-mono uppercase tracking-wider text-blue-700 font-medium">Matriz de Deficiencias Sintéticas</span>
+<h2 class="text-xl font-semibold text-slate-900 mt-1">Perfiles de Simulación Biomimética</h2>
+<p class="text-sm text-slate-600 mt-1">
+          Nuestros algoritmos aplican filtros de transformación cromática LMS, degradación de agudeza visual y perturbación cinemática en tiempo real directo al DOM.
+        </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Perfil 1 -->
+<div class="p-4 rounded border border-slate-200 bg-white flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2.5 mb-2.5">
+<span class="material-symbols-outlined text-blue-700 text-xl">palette</span>
+<h3 class="text-sm font-semibold text-slate-900">Daltonismo y Discromatopsia</h3>
+</div>
+<p class="text-xs text-slate-600 leading-relaxed">
+              Simulación fotorreceptora exacta de Protanopia (rojo), Deuteranopia (verde), Tritanopia (azul) y Acromatopsia total en escala cromática monocroma.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 space-y-1.5">
+<div class="flex justify-between text-[11px] font-mono">
+<span class="text-slate-500">Modo Activo:</span>
+<span class="font-medium text-slate-900">Tritanopia Calibrada</span>
+</div>
+<div class="h-2 w-full rounded bg-slate-100 flex overflow-hidden border border-slate-200">
+<div class="w-1/4 bg-red-400"></div>
+<div class="w-1/4 bg-emerald-400"></div>
+<div class="w-1/4 bg-blue-500"></div>
+<div class="w-1/4 bg-amber-400"></div>
+</div>
+</div>
+</div>
+<!-- Perfil 2 -->
+<div class="p-4 rounded border border-slate-200 bg-white flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2.5 mb-2.5">
+<span class="material-symbols-outlined text-blue-700 text-xl">visibility_off</span>
+<h3 class="text-sm font-semibold text-slate-900">Baja Visión &amp; Visión Túnel</h3>
+</div>
+<p class="text-xs text-slate-600 leading-relaxed">
+              Emulación de pérdida periférica (Glaucoma), opacidad de cristalino (Cataratas) y degradación con control continuo de dioptrías de 0 a 12dp.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 space-y-1.5">
+<div class="flex justify-between text-[11px] font-mono">
+<span class="text-slate-500">Opacidad Cristalino:</span>
+<span class="font-medium text-slate-900">+4.5 Dioptrías</span>
+</div>
+<div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+<div class="h-full bg-slate-700 w-3/5"></div>
+</div>
+</div>
+</div>
+<!-- Perfil 3 -->
+<div class="p-4 rounded border border-slate-200 bg-white flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2.5 mb-2.5">
+<span class="material-symbols-outlined text-blue-700 text-xl">spellcheck</span>
+<h3 class="text-sm font-semibold text-slate-900">Dislexia Cognitiva</h3>
+</div>
+<p class="text-xs text-slate-600 leading-relaxed">
+              Reordenamiento dinámico estocástico y rotación periódica de caracteres internos en párrafos extensos para evaluar legibilidad tipográfica real.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 space-y-1.5">
+<div class="flex justify-between text-[11px] font-mono">
+<span class="text-slate-500">Jitter de Glifos:</span>
+<span class="font-medium text-slate-900">120ms / Permutación</span>
+</div>
+<div class="text-[11px] font-mono text-slate-500 truncate bg-slate-50 px-2 py-0.5 rounded border border-slate-200">
+              "Lgebiiladad tpiogrifcaa tsteeada"
+            </div>
+</div>
+</div>
+<!-- Perfil 4 -->
+<div class="p-4 rounded border border-slate-200 bg-white flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2.5 mb-2.5">
+<span class="material-symbols-outlined text-blue-700 text-xl">touch_app</span>
+<h3 class="text-sm font-semibold text-slate-900">Temblor Motor &amp; Espasmos</h3>
+</div>
+<p class="text-xs text-slate-600 leading-relaxed">
+              Inyección de oscilaciones de puntero de 4Hz a 12Hz, clics accidentales múltiples y retrasos deliberados de activación por latencia física.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 space-y-1.5">
+<div class="flex justify-between text-[11px] font-mono">
+<span class="text-slate-500">Desviación Puntero:</span>
+<span class="font-medium text-slate-900">±18px Radio Jitter</span>
+</div>
+<div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+<div class="h-full bg-rose-600 w-4/5"></div>
+</div>
+</div>
+</div>
+<!-- Perfil 5 -->
+<div class="p-4 rounded border border-slate-200 bg-white flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2.5 mb-2.5">
+<span class="material-symbols-outlined text-blue-700 text-xl">hearing_disabled</span>
+<h3 class="text-sm font-semibold text-slate-900">Discapacidad Auditiva</h3>
+</div>
+<p class="text-xs text-slate-600 leading-relaxed">
+              Supresión total de canales de audio con auditoría automática de contingencias visuales para notificaciones de error, alertas y confirmaciones sonoras.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 space-y-1.5">
+<div class="flex justify-between text-[11px] font-mono">
+<span class="text-slate-500">Feedbacks Visuales:</span>
+<span class="font-medium text-emerald-700">100% Requeridos</span>
+</div>
+<span class="text-[11px] font-mono text-slate-500 block">Alerta sonora → Flash perimetral</span>
+</div>
+</div>
+<!-- Perfil 6 -->
+<div class="p-4 rounded border border-slate-200 bg-white flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-2.5 mb-2.5">
+<span class="material-symbols-outlined text-blue-700 text-xl">record_voice_over</span>
+<h3 class="text-sm font-semibold text-slate-900">Lector de Pantalla (Virtual)</h3>
+</div>
+<p class="text-xs text-slate-600 leading-relaxed">
+              Inspección directa del Árbol de Accesibilidad (a11y tree), visualización de `aria-live`, regiones de referencia e intérprete de síntesis de voz sintética.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-slate-100 space-y-1.5">
+<div class="flex justify-between text-[11px] font-mono">
+<span class="text-slate-500">Buffer Sintetizado:</span>
+<span class="font-medium text-blue-700">&lt;button: "Pagar"&gt;</span>
+</div>
+<span class="text-[11px] font-mono text-slate-500 block">Rol: Button • Presionable</span>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION: Final Impact CTA Banner (Clean & Functional) -->
+<section class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+<div class="border border-slate-200 rounded p-8 sm:p-10 bg-slate-900 text-white flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8">
+<div class="max-w-2xl">
+<div class="inline-flex items-center gap-1.5 text-xs font-mono text-emerald-400 mb-3">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+<span>Empatía Guiada por Datos</span>
+</div>
+<h2 class="text-2xl sm:text-3xl font-semibold tracking-tight text-white">
+            Transforma la accesibilidad de una checklist aburrida a una experiencia humana.
+          </h2>
+<p class="mt-2 text-sm text-slate-300 leading-relaxed">
+            Empieza a probar con tus propios componentes o inspecciona las aplicaciones de tu organización en segundos con nuestro motor de renderizado local.
+          </p>
+</div>
+<div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full lg:w-auto shrink-0">
+<button class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 text-sm font-medium text-slate-900 bg-white hover:bg-slate-100 rounded transition-colors shadow-xs" type="button">
+<span>Comenzar Ahora</span>
+<span class="material-symbols-outlined text-base">rocket_launch</span>
+</button>
+<button class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 text-sm font-medium text-white bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded transition-colors" type="button">
+<span class="material-symbols-outlined text-base text-slate-300">developer_guide</span>
+<span>Ver Documentación</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Clean Minimal Footer -->
+<footer class="border-t border-slate-200 bg-white text-slate-500">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono">
+<div class="flex items-center gap-3 flex-wrap">
+<span class="flex items-center gap-1.5 text-emerald-700 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+          Engine Ready: WCAG 2.2
+        </span>
+<span class="text-slate-300">•</span>
+<span>Simulations Active: 0</span>
+<span class="text-slate-300">•</span>
+<span>Filter: Protanopia / High Contrast</span>
+</div>
+<div class="flex items-center gap-3">
+<span>© 2025 AccessLens DevStudio</span>
+<span class="text-slate-300">•</span>
+<a class="text-slate-600 hover:text-slate-900 transition-colors" href="#">Docs &amp; Spec</a>
+</div>
+</div>
+</footer>
+<!-- Interactive Comparison Slider Script -->
+<script>
+    (function() {
+      const box = document.getElementById('comparator-box');
+      const handle = document.getElementById('divider-handle');
+      const simulatedLayer = document.getElementById('simulated-layer');
+      if (!box || !handle || !simulatedLayer) return;
+
+      let isDragging = false;
+
+      function updateSplit(clientX) {
+        const rect = box.getBoundingClientRect();
+        let offsetX = clientX - rect.left;
+        if (offsetX < 0) offsetX = 0;
+        if (offsetX > rect.width) offsetX = rect.width;
+        
+        const percentage = (offsetX / rect.width) * 100;
+        handle.style.left = `${percentage}%`;
+        simulatedLayer.style.clipPath = `polygon(${percentage}% 0, 100% 0, 100% 100%, ${percentage}% 100%)`;
+      }
+
+      handle.addEventListener('mousedown', () => { isDragging = true; });
+      window.addEventListener('mouseup', () => { isDragging = false; });
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        updateSplit(e.clientX);
+      });
+
+      handle.addEventListener('touchstart', () => { isDragging = true; }, { passive: true });
+      window.addEventListener('touchend', () => { isDragging = false; });
+      window.addEventListener('touchmove', (e) => {
+        if (!isDragging || !e.touches[0]) return;
+        updateSplit(e.touches[0].clientX);
+      }, { passive: true });
+
+      box.addEventListener('click', (e) => {
+        if (e.target.closest('button')) return;
+        updateSplit(e.clientX);
+      });
+    })();
+  </script>
+</body></html>

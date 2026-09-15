@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..24,400,0..1,0" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-tertiary": "#ffffff",
+            "primary-fixed": "#dce1ff",
+            "outline": "#747686",
+            "surface-container-highest": "#dae2fd",
+            "secondary-container": "#6860ef",
+            "on-surface-variant": "#434655",
+            "surface-container-lowest": "#ffffff",
+            "surface-container": "#eaedff",
+            "secondary": "#4e45d5",
+            "secondary-fixed-dim": "#c3c0ff",
+            "surface-bright": "#faf8ff",
+            "primary-container": "#1d4ed8",
+            "on-error": "#ffffff",
+            "on-tertiary-fixed": "#390c00",
+            "on-secondary": "#ffffff",
+            "primary": "#0037b0",
+            "tertiary-fixed": "#ffdbcf",
+            "on-secondary-container": "#fffbff",
+            "on-primary": "#ffffff",
+            "surface-tint": "#2151da",
+            "on-primary-container": "#cad3ff",
+            "primary-fixed-dim": "#b7c4ff",
+            "error-container": "#ffdad6",
+            "inverse-on-surface": "#eef0ff",
+            "on-secondary-fixed": "#100069",
+            "tertiary-container": "#a73400",
+            "tertiary": "#7f2500",
+            "on-tertiary-container": "#ffc9b7",
+            "inverse-surface": "#283044",
+            "background": "#faf8ff",
+            "surface-variant": "#dae2fd",
+            "on-secondary-fixed-variant": "#372abf",
+            "outline-variant": "#c4c5d7",
+            "surface": "#faf8ff",
+            "on-primary-fixed": "#001551",
+            "on-surface": "#131b2e",
+            "on-tertiary-fixed-variant": "#832700",
+            "on-background": "#131b2e",
+            "on-primary-fixed-variant": "#0039b5",
+            "inverse-primary": "#b7c4ff",
+            "secondary-fixed": "#e3dfff",
+            "surface-container-low": "#f2f3ff",
+            "on-error-container": "#93000a",
+            "surface-container-high": "#e2e7ff",
+            "error": "#ba1a1a",
+            "surface-dim": "#d2d9f4",
+            "tertiary-fixed-dim": "#ffb59c"
+          },
+          borderRadius: {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          fontFamily: {
+            sans: ["Geist", "ui-sans-serif", "system-ui", "sans-serif"],
+            mono: ["JetBrains Mono", "monospace"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+    }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #c4c5d7; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #908fa0; }
+  </style>
+</head>
+<body class="bg-surface font-sans text-on-surface antialiased selection:bg-primary-fixed selection:text-primary">
+<!-- Header Sobrio y Utilitario (Estilo Linear / GitHub Review) -->
+<header class="fixed top-0 inset-x-0 h-14 z-50 bg-surface-container-lowest border-b border-outline-variant/60 flex items-center justify-between px-4 lg:px-6">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2.5">
+<div class="w-7 h-7 rounded bg-primary text-on-primary flex items-center justify-center font-mono font-bold text-xs shadow-sm">
+          AL
+        </div>
+<div class="flex items-baseline gap-2">
+<span class="font-semibold text-sm tracking-tight text-on-surface">AccessLens</span>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-medium bg-surface-container text-outline border border-outline-variant/50">v2.4</span>
+</div>
+</div>
+<div class="h-4 w-px bg-outline-variant/70 hidden md:block"></div>
+<nav class="hidden md:flex items-center gap-1 text-xs">
+<a class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded transition-colors" data-path="inicio" href="#">Inicio</a>
+<a class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded transition-colors" data-path="casos-de-uso" href="#">Casos de Uso</a>
+<a class="px-2.5 py-1 text-primary font-medium bg-primary-fixed/50 rounded transition-colors" data-path="simulador-en-vivo" href="#">Simulador en Vivo</a>
+<a class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded transition-colors" data-path="metricas-de-impacto" href="#">Métricas de Impacto</a>
+<a class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low rounded transition-colors" data-path="auditoria-tecnica" href="#">Auditoría Técnica</a>
+</nav>
+</div>
+<div class="flex items-center gap-3">
+<div class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-emerald-300/80 bg-emerald-50/70 text-[11px] font-mono text-emerald-800">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+<span class="font-semibold">WCAG AAA</span>
+<span class="text-emerald-700/80">Target</span>
+</div>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded bg-primary text-on-primary hover:bg-primary/90 text-xs font-medium transition-colors shadow-sm" type="button">
+<span class="material-symbols-outlined text-sm">play_arrow</span>
+<span>Nueva Simulación</span>
+</button>
+<div class="h-4 w-px bg-outline-variant/70 hidden sm:block"></div>
+<div class="flex items-center gap-2">
+<div class="w-7 h-7 rounded-full bg-surface-container-high border border-outline-variant/60 flex items-center justify-center text-xs font-mono text-on-surface-variant">
+          JS
+        </div>
+</div>
+</div>
+</header>
+<!-- Sidebar Lateral Compacto y Preciso -->
+<aside class="fixed left-0 top-14 bottom-6 w-56 bg-surface-container-lowest border-r border-outline-variant/60 z-40 flex flex-col justify-between p-3">
+<div class="space-y-4">
+<div>
+<div class="px-2 py-1 font-mono text-[10px] font-medium tracking-wider uppercase text-outline">
+          Workspaces
+        </div>
+<nav class="mt-1 space-y-0.5 text-xs">
+<a class="flex items-center gap-2 px-2.5 py-1.5 rounded bg-surface-container text-primary font-medium border border-outline-variant/30" data-path="simulador-en-vivo" href="#">
+<span class="material-symbols-outlined text-base">tune</span>
+<span>Simulador en Vivo</span>
+</a>
+<a class="flex items-center gap-2 px-2.5 py-1.5 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="auditoria-tecnica" href="#">
+<span class="material-symbols-outlined text-base text-outline">policy</span>
+<span>Auditoría Técnica</span>
+</a>
+<a class="flex items-center gap-2 px-2.5 py-1.5 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="metricas-de-impacto" href="#">
+<span class="material-symbols-outlined text-base text-outline">bar_chart</span>
+<span>Métricas de Impacto</span>
+</a>
+<a class="flex items-center gap-2 px-2.5 py-1.5 rounded text-on-surface-variant hover:bg-surface-container-low hover:text-on-surface transition-colors" data-path="casos-de-uso" href="#">
+<span class="material-symbols-outlined text-base text-outline">library_books</span>
+<span>Casos de Uso</span>
+</a>
+</nav>
+</div>
+<div class="border-t border-outline-variant/50 pt-3">
+<div class="px-2 py-1 font-mono text-[10px] font-medium tracking-wider uppercase text-outline">
+          Inspección Activa
+        </div>
+<div class="mt-1 px-2.5 py-2 rounded bg-surface-container-low border border-outline-variant/40 space-y-1.5 font-mono text-[11px]">
+<div class="text-on-surface truncate font-medium">CheckoutForm.Modal</div>
+<div class="text-[10px] text-outline">Viewport: 1080×720px</div>
+</div>
+</div>
+</div>
+<!-- Status de Cobertura Minimalista -->
+<div class="p-2.5 rounded border border-outline-variant/50 bg-surface-container-low space-y-1.5">
+<div class="flex items-center justify-between text-[10px] font-mono">
+<span class="text-outline">Engine</span>
+<span class="text-on-surface-variant">v1.2.0</span>
+</div>
+<div class="h-1 w-full bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full w-[94.2%] bg-emerald-600 rounded-full"></div>
+</div>
+<div class="flex justify-between text-[11px] font-mono">
+<span class="text-outline">A11y Coverage</span>
+<span class="text-on-surface font-medium">94.2%</span>
+</div>
+</div>
+</aside>
+<!-- Área Principal de Trabajo -->
+<div class="pl-56">
+<main class="pt-14 min-h-screen bg-surface flex flex-col">
+<!-- Sub-barra de Comandos y Filtros -->
+<section class="h-12 border-b border-outline-variant/60 bg-surface-container-lowest px-4 lg:px-6 flex items-center justify-between gap-4">
+<!-- Target Selector & Estándar -->
+<div class="flex items-center gap-3 min-w-0">
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container-low border border-outline-variant/60 text-xs">
+<span class="material-symbols-outlined text-outline text-sm">code</span>
+<span class="text-outline text-[11px]">Target:</span>
+<span class="font-mono text-xs font-semibold text-primary truncate max-w-[200px]">&lt;CheckoutForm.Modal /&gt;</span>
+<span class="material-symbols-outlined text-outline text-sm">expand_more</span>
+</div>
+<div class="h-4 w-px bg-outline-variant/60"></div>
+<!-- Selector de Estándar WCAG -->
+<div class="inline-flex items-center p-0.5 rounded border border-outline-variant/60 bg-surface-container-low text-xs font-mono" role="radiogroup">
+<button class="px-2 py-0.5 rounded bg-surface-container-lowest text-on-surface font-medium shadow-xs" type="button">
+              WCAG 2.2 AA
+            </button>
+<button class="px-2 py-0.5 rounded text-outline hover:text-on-surface transition-colors" type="button">
+              WCAG 2.2 AAA
+            </button>
+<button class="px-2 py-0.5 rounded text-outline hover:text-on-surface transition-colors hidden xl:inline-block" type="button">
+              Section 508
+            </button>
+</div>
+</div>
+<!-- Telemetría de Hallazgos y Acciones -->
+<div class="flex items-center gap-3">
+<div class="flex items-center gap-1.5 text-xs font-mono">
+<span class="text-on-surface font-medium mr-1">12 Hallazgos:</span>
+<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] font-medium bg-red-50 text-red-700 border border-red-200">
+<span class="w-1.5 h-1.5 rounded-full bg-red-600"></span> 3 Críticos
+            </span>
+<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] font-medium bg-amber-50 text-amber-800 border border-amber-200">
+              5 Moderados
+            </span>
+<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] font-medium bg-surface-container text-outline border border-outline-variant/40">
+              4 Leves
+            </span>
+</div>
+<div class="h-4 w-px bg-outline-variant/60"></div>
+<div class="flex items-center gap-1.5">
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded border border-outline-variant/60 hover:bg-surface-container-low text-on-surface text-xs font-medium transition-colors" id="btn-toggle-blockers" type="button">
+<span class="material-symbols-outlined text-xs text-red-600">filter_alt</span>
+<span class="hidden md:inline">Solo Bloqueantes</span>
+</button>
+<button class="inline-flex items-center gap-1 px-2.5 py-1 rounded border border-outline-variant/60 hover:bg-surface-container-low text-on-surface text-xs font-medium transition-colors" type="button">
+<span class="material-symbols-outlined text-xs text-outline">refresh</span>
+<span>Re-escanear</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Workbench Central en Dos Paneles -->
+<div class="flex-1 grid grid-cols-1 xl:grid-cols-12 overflow-hidden">
+<!-- PANEL IZQUIERDO: Canvas Visual de Render e Inspección (60%) -->
+<section class="xl:col-span-7 border-r border-outline-variant/60 p-4 lg:p-6 bg-surface-container-low flex flex-col min-w-0">
+<!-- Barra de Control del Canvas -->
+<div class="flex items-center justify-between pb-3 text-xs text-on-surface-variant font-mono">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+<span class="font-medium text-on-surface">Canvas de Inspección</span>
+<span class="text-outline text-[11px]">(1080 × 720px • Engine v4.8)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="inline-flex items-center p-0.5 rounded border border-outline-variant/60 bg-surface-container-lowest">
+<button class="px-2 py-0.5 rounded bg-surface-container text-primary font-medium text-[11px]" title="Inspector Overlay" type="button">
+                  Overlay
+                </button>
+<button class="px-2 py-0.5 rounded text-outline hover:text-on-surface text-[11px]" title="Tab Order Sequence" type="button">
+                  Secuencia Foco
+                </button>
+<button class="px-2 py-0.5 rounded text-outline hover:text-on-surface text-[11px]" title="Color Contrast Heatmap" type="button">
+                  Contraste
+                </button>
+</div>
+<button class="p-1 rounded border border-outline-variant/60 bg-surface-container-lowest text-outline hover:text-on-surface" title="Ajustar Escala" type="button">
+<span class="material-symbols-outlined text-sm">fit_screen</span>
+</button>
+</div>
+</div>
+<!-- Contenedor del Canvas Técnico -->
+<div class="flex-1 rounded border border-outline-variant/60 bg-surface-container-lowest p-6 flex flex-col justify-between relative shadow-xs">
+<!-- Tooltip Flotante de Nodo Activo (Estilo DevTools Refinado) -->
+<div class="mb-4 inline-flex flex-col gap-1.5 p-2.5 rounded border border-outline-variant/70 bg-surface-container-lowest shadow-sm max-w-sm text-xs font-mono">
+<div class="flex items-center justify-between pb-1 border-b border-outline-variant/40 text-[11px]">
+<span class="font-semibold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">adjust</span>
+                  #input-card-number
+                </span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container text-outline text-[10px]">role: textbox</span>
+</div>
+<div class="grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] text-on-surface-variant">
+<div><span class="text-outline">name:</span> "Número de Tarjeta"</div>
+<div><span class="text-outline">required:</span> <span class="text-emerald-700 font-medium">true</span></div>
+<div><span class="text-outline">invalid:</span> <span class="text-outline">false</span></div>
+<div><span class="text-outline">tabindex:</span> <span class="font-medium text-primary">2</span></div>
+</div>
+</div>
+<!-- Simulación Limpia: Modal de Checkout -->
+<div class="w-full max-w-md mx-auto border border-outline-variant/70 rounded-md bg-surface-container-lowest p-5 shadow-xs relative">
+<!-- Encabezado del Modal -->
+<div class="flex items-start justify-between pb-3 mb-3 border-b border-outline-variant/40">
+<div>
+<div class="flex items-center gap-2">
+<h3 class="font-semibold text-sm text-on-surface">Finalizar Compra</h3>
+<span class="px-1.5 py-0.2 text-[10px] font-mono rounded bg-emerald-50 text-emerald-800 border border-emerald-200">SSL 256-bit</span>
+</div>
+<p class="text-xs text-outline mt-0.5">Suscripción Pro Anual • $149.00 USD</p>
+</div>
+<!-- Pin de Foco 1 -->
+<div class="relative">
+<button class="w-6 h-6 rounded border border-outline-variant/60 flex items-center justify-center text-outline hover:text-on-surface hover:bg-surface-container-low text-xs" type="button">
+                    ✕
+                  </button>
+<span class="absolute -top-1.5 -left-1.5 w-4 h-4 rounded-full bg-primary text-on-primary font-mono text-[10px] font-bold flex items-center justify-center border border-surface-container-lowest" title="Paso de foco 1">
+                    1
+                  </span>
+</div>
+</div>
+<!-- Campos del Formulario -->
+<div class="space-y-3">
+<!-- Campo Tarjeta -->
+<div class="relative">
+<div class="flex justify-between items-center mb-1 text-xs">
+<label class="font-medium text-on-surface">Número de Tarjeta</label>
+<span class="font-mono text-[10px] text-outline">Visa / Master / Amex</span>
+</div>
+<div class="relative flex items-center">
+<input class="w-full px-2.5 py-1.5 rounded border border-outline-variant/70 font-mono text-xs text-on-surface bg-surface-container-low/40 focus:outline-none focus:border-primary" readonly="" type="text" value="4532 •••• •••• 8921"/>
+<!-- Pin de Foco 2 -->
+<span class="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-primary text-on-primary font-mono text-[10px] font-bold flex items-center justify-center border border-surface-container-lowest" title="Paso de foco 2">
+                      2
+                    </span>
+</div>
+</div>
+<!-- Fila Expiración y CVC con Caja Delimitadora Fina -->
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-xs font-medium text-on-surface mb-1">Expiración</label>
+<input class="w-full px-2.5 py-1.5 rounded border border-outline-variant/70 font-mono text-xs text-on-surface bg-surface-container-low/40" readonly="" type="text" value="11 / 28"/>
+</div>
+<!-- Campo CVC con Detalle de Deficiencia Sutil -->
+<div class="relative">
+<div class="flex items-center justify-between mb-1">
+<label class="text-xs font-medium text-on-surface">Código CVC</label>
+<!-- Botón diminuto defectuoso: 22x22px delimitado limpiamente -->
+<div class="relative inline-flex items-center">
+<button aria-label="Ayuda CVC" class="w-[22px] h-[22px] rounded border border-dashed border-red-400 bg-red-50 text-red-700 flex items-center justify-center font-mono text-[11px] font-semibold" type="button">
+                          ?
+                        </button>
+<!-- Callout de Inspección Sobrio -->
+<div class="absolute right-0 bottom-full mb-1 w-52 p-2 rounded border border-red-300 bg-surface-container-lowest shadow-sm z-20 font-mono text-[10px] leading-tight text-on-surface">
+<div class="font-semibold text-red-700 flex items-center gap-1 mb-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>
+                            Objetivo: 22×22px (Req: ≥44px)
+                          </div>
+<div class="text-outline">Falla WCAG 2.5.8 Target Size</div>
+</div>
+</div>
+</div>
+<div class="relative">
+<input class="w-full px-2.5 py-1.5 rounded border border-outline-variant/70 font-mono text-xs text-on-surface bg-surface-container-low/40" readonly="" type="password" value="931"/>
+<!-- Alerta sutil de tabulación omitida -->
+<div class="mt-1 flex items-center gap-1 text-[10px] font-mono text-red-700">
+<span class="material-symbols-outlined text-xs">arrow_forward</span>
+<span>Foco omitió este control</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Checkbox -->
+<div class="pt-1 flex items-center justify-between text-xs">
+<label class="flex items-center gap-2 cursor-pointer text-on-surface-variant">
+<input checked="" class="w-3.5 h-3.5 rounded border-outline-variant text-primary focus:ring-0" type="checkbox"/>
+<span>Recordar tarjeta de forma segura</span>
+</label>
+<!-- Pin de Foco 4 -->
+<span class="w-4 h-4 rounded-full bg-secondary text-on-secondary font-mono text-[10px] font-bold flex items-center justify-center border border-surface-container-lowest" title="Paso de foco 4">
+                    4
+                  </span>
+</div>
+<!-- CTA Principal con aviso de contraste -->
+<div class="pt-2 relative">
+<button class="w-full py-2 px-3 rounded border border-outline-variant/70 bg-surface-container text-outline text-xs font-medium flex items-center justify-center gap-1.5 cursor-not-allowed" disabled="" type="button">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span>Pagar $149.00 USD</span>
+</button>
+<!-- Pin de Foco 3 (desordenado) -->
+<span class="absolute -top-0.5 -right-1 w-4 h-4 rounded-full bg-amber-600 text-white font-mono text-[10px] font-bold flex items-center justify-center border border-surface-container-lowest" title="Paso de foco 3 fuera de orden">
+                    3
+                  </span>
+<!-- Tag de ratio de contraste sobrio -->
+<div class="mt-1.5 px-2 py-1 rounded bg-surface-container border border-outline-variant/40 flex items-center justify-between text-[10px] font-mono">
+<span class="text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">contrast</span>
+                      Contraste: 3.1:1
+                    </span>
+<span class="text-amber-800 font-medium">Req. AA: ≥4.5:1</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Tira de Auditoría de Secuencia de Tabulación (Limpia y Lineal) -->
+<div class="mt-4 pt-3 border-t border-outline-variant/50 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
+<div class="flex items-center gap-1.5 text-outline">
+<span class="text-on-surface font-medium">Secuencia de Foco:</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface text-[11px]">[1] Cerrar</span>
+<span>→</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface text-[11px]">[2] Tarjeta</span>
+<span class="text-red-600 font-medium">→ [Salta CVC] →</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-on-surface text-[11px]">[4] Checkbox</span>
+<span>→</span>
+<span class="px-1.5 py-0.5 rounded bg-surface-container text-amber-800 border border-amber-300 text-[11px]">[3] Submit</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-red-50 text-red-800 border border-red-200 text-[11px]">
+                WCAG 2.4.3 Focus Order Falla
+              </span>
+</div>
+</div>
+</section>
+<!-- PANEL DERECHO: Inspector de Reglas y Remediación de Código (40%) -->
+<aside class="xl:col-span-5 bg-surface-container-lowest flex flex-col min-w-0">
+<!-- Encabezado de Reglas con Filtros Utilitarios -->
+<div class="p-4 border-b border-outline-variant/60 bg-surface-container-lowest space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-base">rule</span>
+<h2 class="font-semibold text-sm text-on-surface">Inspector de Reglas</h2>
+</div>
+<span class="font-mono text-[11px] text-outline px-1.5 py-0.5 rounded bg-surface-container border border-outline-variant/40">
+                axe-core 4.9.1
+              </span>
+</div>
+<!-- Chips de Filtro Sobrios -->
+<div class="flex flex-wrap items-center gap-1.5 text-xs font-mono">
+<button class="px-2.5 py-1 rounded bg-primary text-on-primary font-medium" type="button">
+                Todos (12)
+              </button>
+<button class="px-2.5 py-1 rounded border border-outline-variant/60 hover:bg-surface-container-low text-on-surface-variant transition-colors" type="button">
+                Contraste (4)
+              </button>
+<button class="px-2.5 py-1 rounded border border-outline-variant/60 hover:bg-surface-container-low text-on-surface-variant transition-colors" type="button">
+                Navegación (3)
+              </button>
+<button class="px-2.5 py-1 rounded border border-outline-variant/60 hover:bg-surface-container-low text-on-surface-variant transition-colors" type="button">
+                Formularios (3)
+              </button>
+<button class="px-2.5 py-1 rounded border border-outline-variant/60 hover:bg-surface-container-low text-on-surface-variant transition-colors" type="button">
+                ARIA (2)
+              </button>
+</div>
+</div>
+<!-- Lista de Hallazgos con Acordeón Limpio y Diff Nítido -->
+<div class="flex-1 p-4 space-y-3 overflow-y-auto max-h-[calc(100vh-180px)]">
+<!-- HALLAZGO 1: CRÍTICO (Abierto con código de remediación) -->
+<div class="rounded border border-red-300/80 bg-surface-container-lowest shadow-xs overflow-hidden">
+<!-- Encabezado de la Tarjeta -->
+<div class="p-3.5 bg-red-50/40 border-b border-red-200/80 flex flex-col gap-1.5 cursor-pointer">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1 px-1.5 py-0.2 rounded font-mono text-[10px] font-semibold bg-red-100 text-red-800 border border-red-300">
+<span class="w-1.5 h-1.5 rounded-full bg-red-600"></span>
+                      CRÍTICO
+                    </span>
+<span class="font-mono text-xs text-outline">WCAG 2.5.8 • Nivel AA</span>
+</div>
+<span class="material-symbols-outlined text-outline text-sm">expand_less</span>
+</div>
+<h3 class="font-medium text-sm text-on-surface leading-snug">
+                  Tamaño de objetivo interactivo inferior a 44×44px
+                </h3>
+<div class="flex items-center gap-1.5 font-mono text-xs text-outline pt-0.5">
+<span>Nodo:</span>
+<code class="px-1.5 py-0.5 rounded bg-surface-container-low text-primary border border-outline-variant/50 text-[11px] truncate">
+                    &lt;button class="info-icon" id="cvc-tooltip"&gt;?&lt;/button&gt;
+                  </code>
+</div>
+</div>
+<!-- Cuerpo del Hallazgo -->
+<div class="p-3.5 space-y-3 bg-surface-container-lowest text-xs">
+<!-- Explicación de Accesibilidad -->
+<div class="p-2.5 rounded bg-surface-container-low border border-outline-variant/50 text-on-surface-variant space-y-1">
+<div class="font-medium text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-xs text-primary">accessibility</span>
+                    Impacto en Personas Usuarias
+                  </div>
+<p class="text-[12px] leading-relaxed text-outline">
+                    Usuarios con temblor motor fino o en dispositivos táctiles no pueden activar este botón con precisión sin accionar involuntariamente campos colindantes.
+                  </p>
+</div>
+<!-- Bloque Diff de Código Limpio y Minimalista -->
+<div class="rounded border border-outline-variant/70 overflow-hidden font-mono text-xs">
+<div class="px-3 py-1.5 bg-surface-container-low border-b border-outline-variant/60 flex items-center justify-between text-[11px]">
+<div class="flex items-center gap-2">
+<span class="text-outline font-medium">Remediación CSS</span>
+<span class="text-emerald-700 font-semibold">• Solución sugerida</span>
+</div>
+<span class="text-outline text-[10px]">diff +6 -1</span>
+</div>
+<div class="p-3 bg-surface-container-low/30 space-y-1 text-[11px] leading-tight overflow-x-auto">
+<div class="text-red-700 bg-red-50/60 px-1.5 py-0.5 rounded">
+<span class="select-none text-red-400 mr-2">-</span>.info-icon { width: 22px; height: 22px; }
+                    </div>
+<div class="text-emerald-800 bg-emerald-50/60 px-1.5 py-0.5 rounded">
+<span class="select-none text-emerald-500 mr-2">+</span>/* Tamaño interactivo adaptado a WCAG 2.2 */
+                    </div>
+<div class="text-emerald-800 bg-emerald-50/60 px-1.5 py-0.5 rounded">
+<span class="select-none text-emerald-500 mr-2">+</span>.info-icon {
+                    </div>
+<div class="text-emerald-800 bg-emerald-50/60 px-1.5 py-0.5 rounded pl-6">
+<span class="select-none text-emerald-500 mr-2">+</span>min-width: 44px;
+                    </div>
+<div class="text-emerald-800 bg-emerald-50/60 px-1.5 py-0.5 rounded pl-6">
+<span class="select-none text-emerald-500 mr-2">+</span>min-height: 44px;
+                    </div>
+<div class="text-emerald-800 bg-emerald-50/60 px-1.5 py-0.5 rounded pl-6">
+<span class="select-none text-emerald-500 mr-2">+</span>display: inline-flex; align-items: center; justify-content: center;
+                    </div>
+<div class="text-emerald-800 bg-emerald-50/60 px-1.5 py-0.5 rounded">
+<span class="select-none text-emerald-500 mr-2">+</span>}
+                    </div>
+</div>
+</div>
+<!-- Acciones Rápidas -->
+<div class="flex items-center justify-between pt-1">
+<button class="px-2 py-1 rounded border border-outline-variant/60 hover:bg-surface-container-low text-outline hover:text-on-surface text-xs font-medium transition-colors" type="button">
+                    Ignorar Regla
+                  </button>
+<button class="inline-flex items-center gap-1 px-3 py-1 rounded bg-primary text-on-primary hover:bg-primary/90 text-xs font-medium transition-colors shadow-xs" type="button">
+<span class="material-symbols-outlined text-xs">content_copy</span>
+<span>Copiar Fix</span>
+</button>
+</div>
+</div>
+</div>
+<!-- HALLAZGO 2: CRÍTICO (Colapsado) -->
+<div class="rounded border border-outline-variant/60 bg-surface-container-lowest p-3 hover:bg-surface-container-low/40 transition-colors cursor-pointer">
+<div class="flex items-start justify-between gap-2">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center gap-1 px-1.5 py-0.2 rounded font-mono text-[10px] font-semibold bg-red-100 text-red-800 border border-red-300">
+                      CRÍTICO
+                    </span>
+<span class="font-mono text-xs text-outline">WCAG 1.4.1 (Uso del Color)</span>
+</div>
+<h4 class="font-medium text-xs text-on-surface leading-snug">
+                    Información de error transmitida únicamente mediante color
+                  </h4>
+<p class="text-[11px] text-outline font-mono">
+                    Elemento: <code class="text-primary">span.field-validation-alert</code> sin ícono ni prefijo textual.
+                  </p>
+</div>
+<span class="material-symbols-outlined text-outline text-sm">expand_more</span>
+</div>
+</div>
+<!-- HALLAZGO 3: MODERADO (Colapsado) -->
+<div class="rounded border border-outline-variant/60 bg-surface-container-lowest p-3 hover:bg-surface-container-low/40 transition-colors cursor-pointer">
+<div class="flex items-start justify-between gap-2">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-1.5 py-0.2 rounded font-mono text-[10px] font-medium bg-amber-100 text-amber-800 border border-amber-300">
+                      MODERADO
+                    </span>
+<span class="font-mono text-xs text-outline">WCAG 1.4.3 (Contraste Mínimo)</span>
+</div>
+<h4 class="font-medium text-xs text-on-surface leading-snug">
+                    Ratio de contraste 3.2:1 inferior al mínimo requerido de 4.5:1
+                  </h4>
+<p class="text-[11px] text-outline font-mono">
+                    Botón: <code class="text-primary">#btn-checkout-submit[disabled]</code> con texto con contraste deficiente.
+                  </p>
+</div>
+<span class="material-symbols-outlined text-outline text-sm">expand_more</span>
+</div>
+</div>
+<!-- HALLAZGO 4: LEVE (Colapsado) -->
+<div class="rounded border border-outline-variant/60 bg-surface-container-lowest p-3 hover:bg-surface-container-low/40 transition-colors cursor-pointer">
+<div class="flex items-start justify-between gap-2">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="inline-flex items-center px-1.5 py-0.2 rounded font-mono text-[10px] font-medium bg-surface-container text-outline border border-outline-variant/50">
+                      LEVE
+                    </span>
+<span class="font-mono text-xs text-outline">WCAG 1.3.1 (Info y Relaciones)</span>
+</div>
+<h4 class="font-medium text-xs text-on-surface leading-snug">
+                    Atributo aria-describedby apunta a un ID inexistente
+                  </h4>
+<p class="text-[11px] text-outline font-mono">
+                    Input: <code class="text-primary">#input-card-number</code> referencia a <code class="text-red-700">#card-desc-unknown</code>.
+                  </p>
+</div>
+<span class="material-symbols-outlined text-outline text-sm">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Pie del Panel con Acciones de Integración -->
+<div class="p-3 border-t border-outline-variant/60 bg-surface-container-low flex items-center justify-between gap-2">
+<button class="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded border border-outline-variant/60 bg-surface-container-lowest hover:bg-surface-container text-on-surface text-xs font-medium transition-colors" type="button">
+<span class="material-symbols-outlined text-sm text-outline">data_object</span>
+<span>Exportar a GitHub / Jira</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded border border-outline-variant/60 bg-surface-container-lowest hover:bg-surface-container text-on-surface text-xs font-medium transition-colors" type="button">
+<span class="material-symbols-outlined text-sm text-outline">checklist</span>
+<span>Checklist WCAG</span>
+</button>
+</div>
+</aside>
+</div>
+</main>
+</div>
+<!-- Pie de Página Global Fino -->
+<footer class="fixed bottom-0 inset-x-0 h-6 z-40 bg-surface-container-lowest border-t border-outline-variant/60 px-4 flex items-center justify-between text-[11px] font-mono text-outline">
+<div class="flex items-center gap-3">
+<span class="flex items-center gap-1 text-emerald-800">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+        Engine WCAG 2.2 Ready
+      </span>
+<span>•</span>
+<span>Simulaciones activas: 0</span>
+<span>•</span>
+<span>Filtro de accesibilidad: Normal</span>
+</div>
+<div class="flex items-center gap-3">
+<span>© 2025 AccessLens DevStudio</span>
+<span>•</span>
+<a class="hover:text-on-surface transition-colors" href="#">Docs &amp; Spec</a>
+</div>
+</footer>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const btnBlockers = document.getElementById('btn-toggle-blockers');
+      if (btnBlockers) {
+        btnBlockers.addEventListener('click', () => {
+          btnBlockers.classList.toggle('bg-red-50');
+          btnBlockers.classList.toggle('border-red-300');
+          btnBlockers.classList.toggle('text-red-700');
+        });
+      }
+    });
+  </script>
+</body></html>
