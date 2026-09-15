@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Badge } from '@/components/primitives/Badge';
 import { Icon, type IconName } from '@/components/primitives/Icon';
 
@@ -118,13 +119,14 @@ export function UseCases() {
               </div>
               <div className="mt-4 flex items-center justify-between border-t border-hairline pt-4 text-body-sm">
                 <span className="font-mono text-ink-soft">{useCase.scenario}</span>
-                <button
-                  type="button"
+                <Link
+                  to={`/simulate/${useCase.id}`}
                   className="inline-flex items-center gap-1 rounded font-medium text-primary hover:text-primary-strong"
+                  aria-label={`Open case: ${useCase.title}`}
                 >
                   Open case
                   <Icon name="arrow-right" />
-                </button>
+                </Link>
               </div>
             </article>
           </li>

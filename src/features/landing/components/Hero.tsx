@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Badge } from '@/components/primitives/Badge';
 import { Button } from '@/components/primitives/Button';
 import { Icon, type IconName } from '@/components/primitives/Icon';
@@ -36,10 +37,13 @@ export function Hero() {
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <Button variant="primary" onClick={() => scrollToId('simulator')}>
+          <Link
+            to="/simulate/checkout"
+            className="inline-flex items-center justify-center gap-2 rounded-md border border-primary bg-primary px-4 py-2 text-body-md font-medium text-primary-on transition-colors hover:bg-primary-strong"
+          >
             <Icon name="play" />
             Try an interactive simulation
-          </Button>
+          </Link>
           <Button variant="secondary" onClick={() => scrollToId('use-cases')}>
             <Icon name="compass" />
             Explore case studies
