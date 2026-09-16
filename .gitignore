@@ -17,6 +17,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# Kiro
+.kiro/
+
 # Editor / OS
 .DS_Store
 Thumbs.db

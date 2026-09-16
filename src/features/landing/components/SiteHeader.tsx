@@ -1,5 +1,4 @@
 import { Badge } from '@/components/primitives/Badge';
-import { Button } from '@/components/primitives/Button';
 import { Icon } from '@/components/primitives/Icon';
 
 const navItems = [
@@ -58,10 +57,6 @@ export function SiteHeader() {
             />
             WCAG 2.2 target
           </Badge>
-          <Button variant="dark">
-            <Icon name="bolt" />
-            New simulation
-          </Button>
         </div>
       </div>
     </header>

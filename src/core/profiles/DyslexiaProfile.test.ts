@@ -29,10 +29,76 @@ describe('DyslexiaProfile', () => {
     profile.apply(root, { shuffle: true });
     const word = root.querySelector('p')!.textContent!;
     expect(word.length).toBe('accessibility'.length);
+    // First letter is kept as a reading anchor; case may jitter elsewhere.
     expect(word[0]).toBe('a');
-    expect(word[word.length - 1]).toBe('y');
-    // Sorted letters are preserved (a permutation).
-    expect(word.split('').sort().join('')).toBe('accessibility'.split('').sort().join(''));
+    expect(word[word.length - 1].toLowerCase()).toBe('y');
+    // Sorted letters are preserved (a permutation), ignoring case jitter.
+    expect(word.toLowerCase().split('').sort().join('')).toBe(
+      'accessibility'.split('').sort().join(''),
+    );
+  });
+
+  it('shuffles button label text', () => {
+    const root = makeRoot('<button>Continue shopping</button>');
+    const profile = new DyslexiaProfile();
+    profile.apply(root, { shuffle: true });
+    const label = root.querySelector('button')!.textContent!;
+    // Same multiset of letters — a shuffled permutation, ignoring case jitter.
+    expect(label.toLowerCase().split('').sort().join('')).toBe(
+      'Continue shopping'.toLowerCase().split('').sort().join(''),
+    );
+  });
+
+  it('shuffles input value and placeholder text', () => {
+    const root = makeRoot(
+      '<input type="text" value="California" placeholder="Delivery address" />',
+    );
+    const profile = new DyslexiaProfile();
+    profile.apply(root, { shuffle: true });
+    const input = root.querySelector('input')!;
+    expect(input.value.toLowerCase().split('').sort().join('')).toBe(
+      'California'.toLowerCase().split('').sort().join(''),
+    );
+    expect(input.placeholder.toLowerCase().split('').sort().join('')).toBe(
+      'Delivery address'.toLowerCase().split('').sort().join(''),
+    );
+  });
+
+  it('destabilises short labels like CVC and MM / YY via case jitter', () => {
+    // These placeholders were below the old 4-letter shuffle threshold and never
+    // changed. Force jitter to fire deterministically.
+    vi.spyOn(Math, 'random').mockReturnValue(0.1);
+    const root = makeRoot(
+      '<input placeholder="CVC" /><input placeholder="MM / YY" />',
+    );
+    const profile = new DyslexiaProfile();
+    profile.apply(root, { shuffle: true });
+    const [cvc, exp] = Array.from(root.querySelectorAll('input'));
+    // Same letters (case-insensitively) but the rendered form changed.
+    expect(cvc.placeholder).not.toBe('CVC');
+    expect(cvc.placeholder.toLowerCase()).toBe('cvc');
+    expect(exp.placeholder).not.toBe('MM / YY');
+    expect(exp.placeholder.toLowerCase()).toBe('mm / yy');
+  });
+
+  it('restores input value and placeholder on revert', () => {
+    const root = makeRoot(
+      '<input type="text" value="California" placeholder="Delivery address" />',
+    );
+    const profile = new DyslexiaProfile();
+    profile.apply(root, { shuffle: true });
+    profile.revert(root);
+    const input = root.querySelector('input')!;
+    expect(input.value).toBe('California');
+    expect(input.placeholder).toBe('Delivery address');
+  });
+
+  it('leaves non-text input values untouched (checkbox)', () => {
+    const root = makeRoot('<input type="checkbox" value="accepted" />');
+    const profile = new DyslexiaProfile();
+    profile.apply(root, { shuffle: true });
+    // A checkbox value is not user-visible prose, so it must not be shuffled.
+    expect(root.querySelector('input')!.value).toBe('accepted');
   });
 
   it('revert restores original text and styles exactly', () => {

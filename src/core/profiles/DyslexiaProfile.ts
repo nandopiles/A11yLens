@@ -1,6 +1,13 @@
 import { EffectScope } from '../engine/EffectScope';
 import type { AccessibilityProfile, ProfileMetadata, ProfileOptions } from '../engine/types';
 
+type FieldElement = HTMLInputElement | HTMLTextAreaElement;
+type FieldProp = 'value' | 'placeholder';
+interface FieldTarget {
+  el: FieldElement;
+  prop: FieldProp;
+}
+
 export interface DyslexiaOptions extends ProfileOptions {
   /** Enable periodic letter micro-shuffling ("moving letters"). Default true. */
   shuffle?: boolean;
@@ -50,9 +57,26 @@ export class DyslexiaProfile implements AccessibilityProfile {
         });
       });
 
+      // Text inside form controls does not live in child text nodes: it sits in the
+      // `value`/`placeholder` attributes, which the TreeWalker never visits. Those are
+      // exactly the button/input labels the user cares about, so shuffle them too.
+      const fieldTargets = this.collectFieldTargets(root);
+      const fieldOriginals = new Map<FieldTarget, string>();
+      fieldTargets.forEach((target) =>
+        fieldOriginals.set(target, target.el[target.prop] ?? ''),
+      );
+      scope.add(() => {
+        fieldOriginals.forEach((value, target) => {
+          target.el[target.prop] = value;
+        });
+      });
+
       const runPass = () => {
         originals.forEach((original, node) => {
           node.nodeValue = this.shuffleWords(original);
+        });
+        fieldOriginals.forEach((original, target) => {
+          target.el[target.prop] = this.shuffleWords(original);
         });
       };
       // First pass immediately, then on an interval.
@@ -67,6 +91,32 @@ export class DyslexiaProfile implements AccessibilityProfile {
     if (!this.scope) return;
     this.scope.dispose();
     this.scope = null;
+  }
+
+  /**
+   * Collect the text-bearing attributes of form controls. For inputs/textarea we shuffle
+   * the visible `value` and the `placeholder`; for text-like inputs both may be present.
+   * `value` is skipped for inputs whose value is not user-visible text (checkbox, etc.).
+   */
+  private collectFieldTargets(root: HTMLElement): FieldTarget[] {
+    const targets: FieldTarget[] = [];
+    const controls = root.querySelectorAll<FieldElement>('input, textarea');
+    controls.forEach((el) => {
+      const isTextarea = el.tagName === 'TEXTAREA';
+      const type = isTextarea ? 'textarea' : (el as HTMLInputElement).type;
+      const valueIsVisibleText =
+        isTextarea ||
+        ['text', 'search', 'email', 'url', 'tel', 'submit', 'button', 'reset'].includes(
+          type,
+        );
+      if (valueIsVisibleText && (el.value ?? '').trim().length > 0) {
+        targets.push({ el, prop: 'value' });
+      }
+      if ((el.placeholder ?? '').trim().length > 0) {
+        targets.push({ el, prop: 'placeholder' });
+      }
+    });
+    return targets;
   }
 
   private collectTextNodes(root: HTMLElement): Text[] {
@@ -91,10 +141,18 @@ export class DyslexiaProfile implements AccessibilityProfile {
   }
 
   private shuffleWords(text: string): string {
-    return text.replace(/[A-Za-zÀ-ÿ]{4,}/g, (word) => this.shuffleInterior(word));
+    // Match every run of 2+ letters. The 4+ threshold left short labels like "CVC",
+    // "MM", "YY" completely untouched, which are exactly the fields users noticed did
+    // not change. Interior shuffling only bites when there are 2+ interior letters, so
+    // we additionally apply irregular case jitter, which destabilises even short words
+    // and single interior letters — a recognised dyslexia-simulation technique.
+    return text.replace(/[A-Za-zÀ-ÿ]{2,}/g, (word) =>
+      this.caseJitter(this.shuffleInterior(word)),
+    );
   }
 
   private shuffleInterior(word: string): string {
+    if (word.length < 4) return word;
     const chars = word.split('');
     const inner = chars.slice(1, -1);
     for (let i = inner.length - 1; i > 0; i -= 1) {
@@ -102,5 +160,22 @@ export class DyslexiaProfile implements AccessibilityProfile {
       [inner[i], inner[j]] = [inner[j], inner[i]];
     }
     return chars[0] + inner.join('') + chars[chars.length - 1];
+  }
+
+  /**
+   * Randomly flip the case of letters after the first, so even 2-letter words like
+   * "MM"/"YY" and 3-letter ones like "CVC" visibly destabilise. The first letter is
+   * kept as a reading anchor.
+   */
+  private caseJitter(word: string): string {
+    if (word.length < 2) return word;
+    const chars = word.split('');
+    for (let i = 1; i < chars.length; i += 1) {
+      if (Math.random() < 0.5) {
+        const upper = chars[i].toUpperCase();
+        chars[i] = chars[i] === upper ? chars[i].toLowerCase() : upper;
+      }
+    }
+    return chars.join('');
   }
 }

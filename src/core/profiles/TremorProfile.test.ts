@@ -10,6 +10,7 @@ function makeRoot(): HTMLElement {
 
 afterEach(() => {
   document.body.innerHTML = '';
+  document.head.querySelectorAll('[data-a11ylens]').forEach((el) => el.remove());
   vi.restoreAllMocks();
 });
 
@@ -48,6 +49,32 @@ describe('TremorProfile', () => {
     expect(cursor.style.display).toBe('block');
     expect(cursor.style.transform).toContain('translate(100px, 80px)');
     rafSpy.mockRestore();
+  });
+
+  it('hides the cursor on interactive descendants, not just the root', () => {
+    const root = makeRoot();
+    const profile = new TremorProfile();
+    profile.apply(root);
+
+    const style = document.head.querySelector(
+      'style[data-a11ylens="tremor-cursor-style"]',
+    );
+    expect(style).not.toBeNull();
+    // The rule must target descendants (e.g. the button) so their pointer/text
+    // cursor cannot override the hidden root cursor on hover.
+    expect(style?.textContent).toContain('* { cursor: none !important; }');
+    expect(root.hasAttribute('data-a11ylens-tremor')).toBe(true);
+  });
+
+  it('removes the injected descendant-cursor style on revert', () => {
+    const root = makeRoot();
+    const profile = new TremorProfile();
+    profile.apply(root);
+    profile.revert(root);
+    expect(
+      document.head.querySelector('style[data-a11ylens="tremor-cursor-style"]'),
+    ).toBeNull();
+    expect(root.hasAttribute('data-a11ylens-tremor')).toBe(false);
   });
 
   it('revert restores the root exactly', () => {

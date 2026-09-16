@@ -40,7 +40,21 @@ export class TremorProfile implements AccessibilityProfile {
     const { amplitude, damping } = LEVELS[options?.intensity ?? 'moderate'];
     const scope = new EffectScope();
 
+    // Hiding the cursor only on the root is not enough: interactive descendants
+    // (buttons, links, inputs) carry their own `cursor` (pointer/text) which wins on
+    // hover, so the native cursor reappears over exactly the targets the tremor is
+    // meant to make hard to hit. Force `cursor: none` on the root and everything
+    // inside it via an injected, scoped stylesheet. See design.md §5d.
     scope.setInlineStyle(root, 'cursor', 'none');
+
+    const styleEl = root.ownerDocument.createElement('style');
+    styleEl.setAttribute('data-a11ylens', 'tremor-cursor-style');
+    const scopeId = 'a11ylens-tremor';
+    scope.setAttribute(root, 'data-a11ylens-tremor', scopeId);
+    styleEl.textContent =
+      `[data-a11ylens-tremor="${scopeId}"], ` +
+      `[data-a11ylens-tremor="${scopeId}"] * { cursor: none !important; }`;
+    scope.appendChild(root.ownerDocument.head, styleEl);
 
     const cursor = root.ownerDocument.createElement('div');
     cursor.setAttribute('data-a11ylens', 'tremor-cursor');
