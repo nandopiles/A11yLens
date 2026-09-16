@@ -2,8 +2,21 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useSimulationStore } from '@/store/simulationStore';
 import { SimulationPanel } from '@/components/SimulationPanel';
+import { AuditOverlay } from '@/components/AuditOverlay';
 import { Icon } from '@/components/primitives/Icon';
 import { getDemo, listDemos } from '@/features/demos/registry';
+import type { DemoDefinition } from '@/features/demos/types';
+
+/**
+ * Route entry. Keying the inner shell by the resolved demo id remounts it on every demo
+ * switch, so per-demo view state (broken/accessible toggle, audit delta) resets naturally
+ * without synchronous setState inside an effect.
+ */
+export function SimulatorPage() {
+  const { demo } = useParams();
+  const definition = getDemo(demo);
+  return <SimulatorShell key={definition.meta.id} definition={definition} />;
+}
 
 /**
  * Simulator shell: mounts the selected demo inside a preview container wired to the engine
@@ -14,34 +27,52 @@ import { getDemo, listDemos } from '@/features/demos/registry';
  * form and reveals a short "what was fixed" panel — so users can compare the broken and
  * accessible versions of the exact same page.
  */
-export function SimulatorPage() {
-  const { demo } = useParams();
+function SimulatorShell({ definition }: { definition: DemoDefinition }) {
   const previewRef = useRef<HTMLDivElement>(null);
   const setRoot = useSimulationStore((s) => s.setRoot);
   const reset = useSimulationStore((s) => s.reset);
+  const audit = useSimulationStore((s) => s.audit);
+  const auditRunning = useSimulationStore((s) => s.auditRunning);
+  const runAudit = useSimulationStore((s) => s.runAudit);
+  const clearAudit = useSimulationStore((s) => s.clearAudit);
   const [accessible, setAccessible] = useState(false);
+  // The violation count captured just before the last state change, so the AuditOverlay
+  // can show the before→after delta (e.g. 8 → 0 when the page is made accessible).
+  const [previousCount, setPreviousCount] = useState<number | null>(null);
 
-  const definition = getDemo(demo);
   const { Component, meta } = definition;
   const demos = listDemos();
 
+  // Bind/unbind the engine to this demo's preview container. Because the shell is keyed by
+  // demo id, this runs once per demo mount — no cross-demo effect leakage.
   useEffect(() => {
-    // Land at the top of the page when entering or switching demos (routers preserve the
-    // previous scroll position otherwise).
     window.scrollTo(0, 0);
-    // Reset any active profiles before (re)binding the root to the new demo's container.
     reset();
     setRoot(previewRef.current);
-    // Every demo starts on its broken version.
-    setAccessible(false);
+    clearAudit();
     return () => {
       reset();
       setRoot(null);
     };
-    // Re-run when the demo changes so profiles never leak across demos.
-  }, [setRoot, reset, meta.id]);
+  }, [setRoot, reset, clearAudit]);
+
+  // Audit the preview after each render of the demo DOM (initial mount and the
+  // broken↔accessible toggle). A deferred rAF ensures React has committed the new DOM and
+  // the accessible-toggle's reset() has run before axe reads the tree.
+  useEffect(() => {
+    let cancelled = false;
+    const id = requestAnimationFrame(() => {
+      if (!cancelled) void runAudit();
+    });
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(id);
+    };
+  }, [runAudit, accessible]);
 
   const toggleAccessible = () => {
+    // Remember the current violation count so the overlay can animate the drop.
+    setPreviousCount(audit?.violationCount ?? null);
     // Reverting simulation effects avoids stale inline filters/attributes leaking onto the
     // freshly re-rendered accessible DOM.
     reset();
@@ -136,6 +167,10 @@ export function SimulatorPage() {
             </ul>
           </div>
         )}
+
+        {/* Real axe-core audit of the live preview. The count drops toward 0 as the page
+            is made accessible — the evidence behind the empathy simulation. */}
+        <AuditOverlay report={audit} running={auditRunning} previousCount={previousCount} />
 
         {/* The container the engine mutates. The demo renders its own DOM inside it. */}
         <div

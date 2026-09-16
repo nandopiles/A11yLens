@@ -24,9 +24,10 @@ export function DashboardDemo({ accessible }: DemoComponentProps) {
             <span aria-hidden="true" style={{ fontSize: '18px' }}>📡</span>
             <span className="text-lg font-bold text-slate-900">{boardTitle}</span>
           </div>
-          <p className="mt-0.5 text-sm text-slate-500">{boardHint}</p>
+          {/* Broken: #c2cad6 hint ~1.9:1. Accessible: #475569 ~7:1. WCAG 1.4.3 */}
+          <p className="mt-0.5 text-sm" style={{ color: accessible ? '#475569' : '#c2cad6' }}>{boardHint}</p>
         </div>
-        <div className="flex items-center gap-3 text-xs text-slate-500">
+        <div className="flex items-center gap-3 text-xs" style={{ color: accessible ? '#334155' : '#c2cad6' }}>
           <span className="inline-flex items-center gap-1.5">
             <StatusMark status="up" accessible={accessible} />
             Operativo
@@ -40,9 +41,9 @@ export function DashboardDemo({ accessible }: DemoComponentProps) {
 
       {/* Summary tiles */}
       <div className="mb-4 grid grid-cols-3 gap-3">
-        <SummaryTile label="Servicios" value={`${services.length}`} tint="#eef2ff" ink="#4338ca" />
-        <SummaryTile label="Operativos" value={`${upCount}`} tint="#ecfdf5" ink="#047857" />
-        <SummaryTile label="Incidencias" value={`${services.length - upCount}`} tint="#fef2f2" ink="#b91c1c" />
+        <SummaryTile label="Servicios" value={`${services.length}`} tint="#eef2ff" ink="#3730a3" accessible={accessible} />
+        <SummaryTile label="Operativos" value={`${upCount}`} tint="#ecfdf5" ink="#047857" accessible={accessible} />
+        <SummaryTile label="Incidencias" value={`${services.length - upCount}`} tint="#fef2f2" ink="#b91c1c" accessible={accessible} />
       </div>
 
       <ul
@@ -61,7 +62,8 @@ export function DashboardDemo({ accessible }: DemoComponentProps) {
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div className="flex items-center gap-2">
                   <span className="text-sm font-semibold text-slate-900">{service.name}</span>
-                  <span className="font-mono text-[11px] text-slate-400">{service.region}</span>
+                  {/* Broken: #cbd5e1 region ~1.5:1. Accessible: #475569 ~7:1. */}
+                  <span className="font-mono text-[11px]" style={{ color: accessible ? '#475569' : '#cbd5e1' }}>{service.region}</span>
                 </div>
                 {/* Latency bar chart (visual richness; not the status signal). */}
                 <div style={{ marginTop: '6px', height: '6px', width: '100%', background: '#f1f5f9', borderRadius: '9999px', overflow: 'hidden' }}>
@@ -81,7 +83,7 @@ export function DashboardDemo({ accessible }: DemoComponentProps) {
                 </span>
               )}
 
-              <span className="font-mono text-xs text-slate-500" style={{ width: '52px', textAlign: 'right', flex: 'none' }}>
+              <span className="font-mono text-xs" style={{ width: '52px', textAlign: 'right', flex: 'none', color: accessible ? '#334155' : '#c2cad6' }}>
                 {service.latencyMs > 0 ? `${service.latencyMs} ms` : '—'}
               </span>
             </li>
@@ -92,11 +94,12 @@ export function DashboardDemo({ accessible }: DemoComponentProps) {
   );
 }
 
-function SummaryTile({ label, value, tint, ink }: { label: string; value: string; tint: string; ink: string }) {
+function SummaryTile({ label, value, tint, ink, accessible }: { label: string; value: string; tint: string; ink: string; accessible: boolean }) {
   return (
     <div style={{ borderRadius: '12px', background: tint, padding: '12px 14px' }}>
       <div style={{ fontSize: '22px', fontWeight: 800, color: ink }}>{value}</div>
-      <div style={{ fontSize: '12px', color: '#64748b' }}>{label}</div>
+      {/* Broken: #b9c1cd label ~2.2:1 over the pale tile. Accessible: #334155. WCAG 1.4.3 */}
+      <div style={{ fontSize: '12px', color: accessible ? '#334155' : '#b9c1cd' }}>{label}</div>
     </div>
   );
 }

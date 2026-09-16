@@ -1,7 +1,7 @@
 import type { DemoDefinition, DemoId } from './types';
 import { CheckoutDemo } from '../checkout-demo/CheckoutDemo';
 import { SocialFeedDemo } from '../social-feed-demo/SocialFeedDemo';
-import { NavigationDemo } from '../navigation-demo/NavigationDemo';
+import { ReportsDemo } from '../reports-demo/ReportsDemo';
 import { DashboardDemo } from '../dashboard-demo/DashboardDemo';
 
 /**
@@ -60,24 +60,32 @@ const DEMOS: Record<DemoId, DemoDefinition> = {
     },
     Component: SocialFeedDemo,
   },
-  navigation: {
+  reports: {
     meta: {
-      id: 'navigation',
-      title: 'Navegación y modal',
-      summary: 'Un desplegable y un modal con comportamiento de teclado roto.',
-      goalLabel: 'Abrir un elemento del menú',
+      id: 'reports',
+      title: 'Reportes del equipo',
+      summary: 'Una tabla de tickets, una galería de capturas y un formulario de reporte — plagado de fallos.',
+      goalLabel: 'Enviar un reporte',
       defects: [
-        { what: 'El foco del modal se escapa de la trampa', revealedBy: 'Lector de pantalla', wcag: '2.4.3 / 2.1.2' },
-        { what: 'Orden de tabulación desordenado (tabindex positivo)', revealedBy: 'Teclado', wcag: '2.4.3' },
-        { what: 'Elementos de menú <div> no semánticos', revealedBy: 'Lector de pantalla', wcag: '4.1.2' },
+        { what: 'La "tabla" son <div>s: sin <table> ni encabezados, no hay relación fila/columna', revealedBy: 'Lector de pantalla', wcag: '1.3.1' },
+        { what: 'Prioridad indicada solo por el color de un punto', revealedBy: 'Daltonismo', wcag: '1.4.1' },
+        { what: 'Campos del formulario etiquetados solo por el placeholder', revealedBy: 'Lector de pantalla', wcag: '1.3.1 / 4.1.2' },
+        { what: 'Capturas (img) sin texto alternativo', revealedBy: 'Lector de pantalla', wcag: '1.1.1' },
+        { what: 'El botón "Enviar" es un <div> sin rol ni nombre y sin foco por teclado', revealedBy: 'Teclado', wcag: '4.1.2 / 2.1.1' },
+        { what: 'Enlace "ver más" sin texto perceptible', revealedBy: 'Lector de pantalla', wcag: '2.4.4 / 4.1.2' },
+        { what: 'Texto de estados, chips y metadatos con contraste muy bajo', revealedBy: 'Visión reducida', wcag: '1.4.3' },
       ],
       remediation: [
-        { fix: 'Usa <button>/<a> reales para el menú y el desplegable', wcag: '4.1.2' },
-        { fix: 'Deja el orden de tabulación natural (sin tabindex positivo)', wcag: '2.4.3' },
-        { fix: 'Da al modal role="dialog", aria-modal y atrapa el foco', wcag: '2.4.3 / 2.1.2' },
+        { fix: 'Usa una <table> real con <th scope> para filas y columnas', wcag: '1.3.1' },
+        { fix: 'Muestra prioridad y estado como texto, no solo con color', wcag: '1.4.1' },
+        { fix: 'Asocia un <label> visible a cada campo del formulario', wcag: '1.3.1 / 4.1.2' },
+        { fix: 'Añade texto alternativo descriptivo a cada captura', wcag: '1.1.1' },
+        { fix: 'Convierte "Enviar" en un <button> real, con nombre y foco', wcag: '4.1.2 / 2.1.1' },
+        { fix: 'Da texto perceptible al enlace "Ver todos los tickets"', wcag: '2.4.4' },
+        { fix: 'Sube el contraste de todos los textos a ≥ 4.5:1', wcag: '1.4.3' },
       ],
     },
-    Component: NavigationDemo,
+    Component: ReportsDemo,
   },
   dashboard: {
     meta: {

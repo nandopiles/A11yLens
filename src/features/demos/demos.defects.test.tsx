@@ -1,7 +1,7 @@
 import { describe, it, expect, afterEach } from 'vitest';
 import { render, screen, cleanup, within } from '@testing-library/react';
 import { CheckoutDemo } from '../checkout-demo/CheckoutDemo';
-import { NavigationDemo } from '../navigation-demo/NavigationDemo';
+import { ReportsDemo } from '../reports-demo/ReportsDemo';
 import { DashboardDemo } from '../dashboard-demo/DashboardDemo';
 import { SocialFeedDemo } from '../social-feed-demo/SocialFeedDemo';
 
@@ -41,19 +41,43 @@ describe('checkout demo — accessible', () => {
   });
 });
 
-describe('navigation demo — broken', () => {
-  it('uses positive tabindex (scrambled order)', () => {
-    const { container } = render(<NavigationDemo accessible={false} />);
-    const positiveTabindex = container.querySelectorAll('[tabindex="1"], [tabindex="2"], [tabindex="3"]');
-    expect(positiveTabindex.length).toBeGreaterThan(0);
+describe('reports demo — broken', () => {
+  it('fakes the ticket grid with <div>s (no real table/headers)', () => {
+    const { container } = render(<ReportsDemo accessible={false} />);
+    expect(container.querySelector('table')).toBeNull();
+  });
+
+  it('has form inputs with no accessible name and images with no alt', () => {
+    const { container } = render(<ReportsDemo accessible={false} />);
+    const inputs = screen.getAllByRole('textbox');
+    expect(inputs.length).toBeGreaterThan(0);
+    inputs.forEach((input) => expect(input).not.toHaveAccessibleName());
+    const imgs = container.querySelectorAll('img');
+    expect(imgs.length).toBeGreaterThan(0);
+    imgs.forEach((img) => expect(img.getAttribute('alt')).toBe(''));
+  });
+
+  it('uses a non-semantic <div> as the submit control (no button role)', () => {
+    render(<ReportsDemo accessible={false} />);
+    expect(screen.queryByRole('button', { name: /enviar reporte/i })).toBeNull();
   });
 });
 
-describe('navigation demo — accessible', () => {
-  it('removes positive tabindex (natural focus order)', () => {
-    const { container } = render(<NavigationDemo accessible />);
-    const positiveTabindex = container.querySelectorAll('[tabindex="1"], [tabindex="2"], [tabindex="3"]');
-    expect(positiveTabindex.length).toBe(0);
+describe('reports demo — accessible', () => {
+  it('renders a real data table with column and row headers', () => {
+    const { container } = render(<ReportsDemo accessible />);
+    expect(container.querySelector('table')).not.toBeNull();
+    expect(container.querySelectorAll('th[scope="col"]').length).toBeGreaterThan(0);
+    expect(container.querySelectorAll('th[scope="row"]').length).toBeGreaterThan(0);
+  });
+
+  it('labels every input, adds alt to every image, and exposes a real submit button', () => {
+    const { container } = render(<ReportsDemo accessible />);
+    screen.getAllByRole('textbox').forEach((input) => expect(input).toHaveAccessibleName());
+    const imgs = container.querySelectorAll('img');
+    expect(imgs.length).toBeGreaterThan(0);
+    imgs.forEach((img) => expect(img.getAttribute('alt')).toBeTruthy());
+    expect(screen.getByRole('button', { name: /enviar reporte/i })).toBeInTheDocument();
   });
 });
 

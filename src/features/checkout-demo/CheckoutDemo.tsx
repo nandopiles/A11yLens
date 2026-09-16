@@ -40,14 +40,30 @@ export function CheckoutDemo({ accessible }: DemoComponentProps) {
           </span>
           <div>
             <div className="text-base font-bold text-slate-900">{storeName}</div>
-            <div className="font-mono text-[11px] text-slate-400">Pago seguro · Paso 3 de 3</div>
+            {/* Broken: 11px grey #cbd5e1 on white ≈ 1.5:1, unreadable. Accessible: darker. */}
+            <div
+              className="font-mono text-[11px]"
+              style={{ color: accessible ? '#475569' : '#cbd5e1' }}
+            >
+              Pago seguro · Paso 3 de 3
+            </div>
           </div>
         </div>
-        <span
-          style={{ fontSize: '11px', fontWeight: 700, color: '#4338ca', background: '#eef2ff', padding: '4px 10px', borderRadius: '9999px' }}
-        >
-          🔒 Cifrado
-        </span>
+        <div className="flex items-center gap-2">
+          {/* Broken: icon-only button with no accessible name — WCAG 4.1.2. Accessible: aria-label. */}
+          <button
+            type="button"
+            aria-label={accessible ? 'Ayuda sobre el pago' : undefined}
+            style={{ width: accessible ? '32px' : '28px', height: accessible ? '32px' : '28px', borderRadius: '9999px', border: '1px solid #cbd5e1', background: '#fff', cursor: 'pointer', color: accessible ? '#334155' : '#94a3b8' }}
+          >
+            {accessible ? '?' : <span aria-hidden="true">?</span>}
+          </button>
+          <span
+            style={{ fontSize: '11px', fontWeight: 700, color: accessible ? '#3730a3' : '#a5b4fc', background: '#eef2ff', padding: '4px 10px', borderRadius: '9999px' }}
+          >
+            🔒 Cifrado
+          </span>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-[1.1fr_0.9fr]">
@@ -110,7 +126,16 @@ export function CheckoutDemo({ accessible }: DemoComponentProps) {
 
         {/* Order summary with product thumbnails */}
         <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-          <h3 style={{ margin: '0 0 12px', fontSize: '14px', fontWeight: 700, color: '#0f172a' }}>Tu pedido</h3>
+          {/*
+            Broken: this "Tu pedido" heading is really an <h5>, skipping from the page's
+            h1→h3 straight past to h5 (broken heading order — WCAG 1.3.1). Accessible: a
+            correctly-ranked <h2>.
+          */}
+          {accessible ? (
+            <h2 style={{ margin: '0 0 12px', fontSize: '14px', fontWeight: 700, color: '#0f172a' }}>Tu pedido</h2>
+          ) : (
+            <h5 style={{ margin: '0 0 12px', fontSize: '14px', fontWeight: 700, color: '#0f172a' }}>Tu pedido</h5>
+          )}
 
           <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: '10px' }}>
             {orderItems.map((item) => (
@@ -123,7 +148,10 @@ export function CheckoutDemo({ accessible }: DemoComponentProps) {
                 </span>
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div className="text-sm font-medium text-slate-900">{item.name}</div>
-                  <div className="font-mono text-[11px] text-slate-400">{item.variant}</div>
+                  {/* Broken: #cbd5e1 variant text ~1.5:1. Accessible: #475569 ~7:1. */}
+                  <div className="font-mono text-[11px]" style={{ color: accessible ? '#475569' : '#cbd5e1' }}>
+                    {item.variant}
+                  </div>
                 </div>
                 <span className="text-sm font-semibold text-slate-900">{item.price}</span>
               </li>
@@ -132,9 +160,14 @@ export function CheckoutDemo({ accessible }: DemoComponentProps) {
 
           <dl className="mt-4 space-y-1.5 border-t border-slate-200 pt-3 text-sm">
             {orderLines.map((line) => (
-              <div key={line.label} className="flex justify-between text-slate-500">
+              <div
+                key={line.label}
+                className="flex justify-between"
+                // Broken: #b4bdc9 line labels ~2.4:1. Accessible: #475569 ~7:1.
+                style={{ color: accessible ? '#475569' : '#b4bdc9' }}
+              >
                 <dt>{line.label}</dt>
-                <dd className="font-medium text-slate-700">{line.value}</dd>
+                <dd className="font-medium" style={{ color: accessible ? '#0f172a' : '#94a3b8' }}>{line.value}</dd>
               </div>
             ))}
             <div className="flex justify-between pt-1 text-base font-bold text-slate-900">
@@ -144,7 +177,7 @@ export function CheckoutDemo({ accessible }: DemoComponentProps) {
           </dl>
 
           {accessible && (
-            <style>{`.a11y-input:focus-visible{outline:3px solid #6366f1;outline-offset:2px}.a11y-pay:focus-visible{outline:3px solid #0f172a;outline-offset:2px}`}</style>
+            <style>{`.a11y-input:focus-visible{outline:3px solid #4338ca;outline-offset:2px}.a11y-pay:focus-visible{outline:3px solid #0f172a;outline-offset:2px}`}</style>
           )}
 
           <button
@@ -153,12 +186,23 @@ export function CheckoutDemo({ accessible }: DemoComponentProps) {
             className={accessible ? 'a11y-pay' : undefined}
             style={
               accessible
-                ? { marginTop: '16px', width: '100%', minHeight: '48px', padding: '12px', background: 'linear-gradient(135deg,#4f46e5,#7c3aed)', color: '#ffffff', border: 'none', borderRadius: '12px', fontSize: '15px', fontWeight: 700, cursor: 'pointer' }
-                : { marginTop: '16px', width: '100%', padding: '8px 12px', background: '#93b4f5', color: '#ffffff', border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }
+                ? // Solid, high-contrast background so axe can verify contrast (it cannot
+                  // measure contrast over a gradient). #3730a3 on white ≈ 8.6:1.
+                  { marginTop: '16px', width: '100%', minHeight: '48px', padding: '12px', background: '#3730a3', color: '#ffffff', border: 'none', borderRadius: '12px', fontSize: '15px', fontWeight: 700, cursor: 'pointer' }
+                : // A11Y-DEFECT: pay button is near-invisible (white on pale blue ≈ 1.7:1) — WCAG 1.4.3
+                  { marginTop: '16px', width: '100%', padding: '8px 12px', background: '#bcd0f7', color: '#ffffff', border: 'none', borderRadius: '8px', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }
             }
           >
             Confirmar y pagar · {orderTotal.value.replace(' EUR', '')}
           </button>
+
+          {/* Broken: legal disclaimer at #c7cfda ≈ 1.6:1 — effectively invisible. WCAG 1.4.3 */}
+          <p
+            style={{ marginTop: '10px', fontSize: '11px', lineHeight: 1.5, color: accessible ? '#475569' : '#c7cfda' }}
+          >
+            Al confirmar aceptas los términos del servicio y la política de reembolsos. El cargo
+            aparecerá como “LUMEN STORE”.
+          </p>
         </div>
       </div>
     </form>

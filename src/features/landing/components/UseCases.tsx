@@ -42,14 +42,14 @@ const useCases: UseCase[] = [
     scenario: 'Escenario n.º 02 · Social y multimedia',
   },
   {
-    id: 'navigation',
-    icon: 'compass',
-    title: 'Menú de navegación complejo',
+    id: 'reports',
+    icon: 'bug',
+    title: 'Panel de reportes del equipo',
     description:
-      'Megamenú multinivel con subcategorías anidadas manejado únicamente con teclado, sin trampas de foco y con un orden de foco correcto.',
+      'Una "tabla" hecha de <div>s sin encabezados, capturas sin alt, campos etiquetados solo por placeholder, un "botón" que es un <div> y texto de contraste mínimo. Un desastre de accesibilidad.',
     difficulty: 'Alta',
-    criteria: ['Teclado (2.1.1)', 'Sin trampa de teclado (2.1.2)', 'Orden del foco (2.4.3)'],
-    scenario: 'Escenario n.º 03 · Portal empresarial',
+    criteria: ['Info y relaciones (1.3.1)', 'Nombre, rol, valor (4.1.2)', 'Contraste (1.4.3)'],
+    scenario: 'Escenario n.º 03 · Herramienta interna',
   },
   {
     id: 'dashboard',

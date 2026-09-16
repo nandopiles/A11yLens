@@ -5,7 +5,7 @@ describe('demo registry', () => {
   it('resolves each known demo id', () => {
     expect(getDemo('checkout').meta.id).toBe('checkout');
     expect(getDemo('feed').meta.id).toBe('feed');
-    expect(getDemo('navigation').meta.id).toBe('navigation');
+    expect(getDemo('reports').meta.id).toBe('reports');
     expect(getDemo('dashboard').meta.id).toBe('dashboard');
   });
 

@@ -69,7 +69,10 @@ export function SocialFeedDemo({ accessible }: DemoComponentProps) {
                 </span>
                 <div>
                   <div className="text-sm font-semibold text-slate-900">{post.author}</div>
-                  <div className="font-mono text-[11px] text-slate-400">{post.handle}</div>
+                  {/* Broken: #cbd5e1 handle ~1.5:1. Accessible: #475569 ~7:1. WCAG 1.4.3 */}
+                  <div className="font-mono text-[11px]" style={{ color: accessible ? '#475569' : '#cbd5e1' }}>
+                    {post.handle}
+                  </div>
                 </div>
               </div>
               {!accessible && isActive && (
@@ -118,7 +121,8 @@ export function SocialFeedDemo({ accessible }: DemoComponentProps) {
                 padding: accessible ? '6px 14px 10px' : '10px 14px',
                 fontSize: accessible ? '14px' : '13px',
                 lineHeight: accessible ? 1.7 : 1.2,
-                color: accessible ? '#1e293b' : '#334155',
+                // Broken: dense body at #aab4c2 ~2.6:1. Accessible: #1e293b ~14:1. WCAG 1.4.3 / 1.4.8
+                color: accessible ? '#1e293b' : '#aab4c2',
               }}
             >
               {post.body}
@@ -133,7 +137,8 @@ export function SocialFeedDemo({ accessible }: DemoComponentProps) {
                   <audio controls preload="none" src={silentClipSrc} style={{ height: '32px', flex: 1 }}>
                     Tu navegador no puede reproducir este audio.
                   </audio>
-                  <span className="font-mono text-xs text-slate-400">{post.audioDuration}</span>
+                  {/* Broken: #cbd5e1 duration ~1.5:1. Accessible: #475569 ~7:1. WCAG 1.4.3 */}
+                  <span className="font-mono text-xs" style={{ color: accessible ? '#475569' : '#cbd5e1' }}>{post.audioDuration}</span>
                 </div>
 
                 {accessible ? (
@@ -142,9 +147,9 @@ export function SocialFeedDemo({ accessible }: DemoComponentProps) {
                     <p style={{ margin: '6px 0 0', lineHeight: 1.6 }}>{voiceNoteTranscript}</p>
                   </details>
                 ) : (
-                  // A11Y-DEFECT: information lives only in the audio, no transcript/captions —
-                  // WCAG 1.2.1 / 1.2.2
-                  <p style={{ margin: '6px 0 0', fontSize: '12px', color: '#94a3b8' }}>(Sin transcripción)</p>
+                  // A11Y-DEFECT: info lives only in the audio, no transcript/captions —
+                  // WCAG 1.2.1 / 1.2.2; also #cbd5e1 ~1.5:1 low contrast — WCAG 1.4.3
+                  <p style={{ margin: '6px 0 0', fontSize: '12px', color: '#cbd5e1' }}>(Sin transcripción)</p>
                 )}
               </div>
             )}
@@ -225,7 +230,8 @@ function EngagementBar({ post, accessible }: { post: FeedPost; accessible: boole
     padding: '4px 2px',
     cursor: 'pointer',
     fontSize: '14px',
-    color: '#64748b',
+    // Broken: counts at #b8c0cc ~2.3:1. Accessible: #475569 ~7:1. WCAG 1.4.3
+    color: accessible ? '#475569' : '#b8c0cc',
   };
 
   return (

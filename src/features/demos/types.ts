@@ -1,6 +1,6 @@
 import type { ComponentType } from 'react';
 
-export type DemoId = 'checkout' | 'feed' | 'navigation' | 'dashboard';
+export type DemoId = 'checkout' | 'feed' | 'reports' | 'dashboard';
 
 export interface DemoDefect {
   what: string;
