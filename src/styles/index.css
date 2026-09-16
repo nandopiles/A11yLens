@@ -9,6 +9,14 @@
 
   html {
     font-family: theme('fontFamily.sans');
+    /* Smooth in-page navigation (disabled under prefers-reduced-motion below). */
+    scroll-behavior: smooth;
+  }
+
+  /* Offset anchored sections so the sticky header (h-14 = 3.5rem) never covers them,
+     leaving a little breathing room above the target. */
+  :where(#use-cases, #profiles, #top) {
+    scroll-margin-top: 5rem;
   }
 
   body {

@@ -4,7 +4,6 @@ import { Icon } from '@/components/primitives/Icon';
 const navItems = [
   { label: 'Inicio', href: '#top', current: true },
   { label: 'Casos de uso', href: '#use-cases' },
-  { label: 'Simulador en vivo', href: '#simulator' },
   { label: 'Perfiles', href: '#profiles' },
 ];
 

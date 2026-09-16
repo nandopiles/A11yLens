@@ -71,5 +71,10 @@ export function Hero() {
 }
 
 function scrollToId(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // Honor prefers-reduced-motion: jump instantly instead of animating the scroll.
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.getElementById(id)?.scrollIntoView({
+    behavior: prefersReduced ? 'auto' : 'smooth',
+    block: 'start',
+  });
 }

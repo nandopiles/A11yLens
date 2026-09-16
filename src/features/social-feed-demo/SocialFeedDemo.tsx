@@ -43,6 +43,34 @@ export function SocialFeedDemo({ accessible }: DemoComponentProps) {
         <style>{`@keyframes a11ylens-blink { 0%,49% { opacity:1 } 50%,100% { opacity:0 } }`}</style>
       )}
 
+      {/* Feed toolbar with a language picker. Broken: <select> with no label. WCAG 4.1.2 */}
+      <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-white px-3 py-2">
+        {accessible ? (
+          <h2 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: '#0f172a' }}>Tu feed</h2>
+        ) : (
+          // A11Y-DEFECT: heading with no perceivable text (empty-heading). WCAG 1.3.1
+          <h2 style={{ margin: 0, fontSize: '14px', fontWeight: 700, color: '#0f172a' }}>
+            <span aria-hidden="true">Tu feed</span>
+          </h2>
+        )}
+        <div className="flex items-center gap-1.5">
+          {accessible && (
+            <label htmlFor="feed-lang" style={{ fontSize: '12px', color: '#475569' }}>
+              Idioma
+            </label>
+          )}
+          <select
+            id={accessible ? 'feed-lang' : undefined}
+            aria-label={accessible ? 'Idioma del feed' : undefined}
+            defaultValue="es"
+            style={{ fontSize: '12px', padding: '4px 6px', border: '1px solid #cbd5e1', borderRadius: '6px', background: '#fff' }}
+          >
+            <option value="es">Español</option>
+            <option value="en">English</option>
+          </select>
+        </div>
+      </div>
+
       {feedPosts.map((post, index) => {
         const isActive = index === activeIndex;
         return (
@@ -246,6 +274,13 @@ function EngagementBar({ post, accessible }: { post: FeedPost; accessible: boole
         <span aria-hidden="true" style={{ filter: liked ? 'none' : 'grayscale(1)', opacity: liked ? 1 : 0.55 }}>❤️</span>
         {accessible ? <span>{liked ? engagementLabels.likeOn : engagementLabels.likeOff}</span> : null}
         <span>{post.likes.toLocaleString('es-ES')}</span>
+        {/* A11Y-DEFECT (broken): a focusable <button> nested inside another button →
+            nested-interactive. Accessible: no nested control. WCAG 4.1.2 */}
+        {!accessible && (
+          <button type="button" style={{ marginLeft: '4px', border: 'none', background: 'none', cursor: 'pointer', color: '#b8c0cc' }}>
+            <span aria-hidden="true">⋯</span>
+          </button>
+        )}
       </button>
 
       <button type="button" aria-label={accessible ? `${engagementLabels.comment} · ${post.comments} comentarios` : undefined} style={btn}>

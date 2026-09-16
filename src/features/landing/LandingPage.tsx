@@ -1,6 +1,5 @@
 import { SiteHeader } from './components/SiteHeader';
 import { Hero } from './components/Hero';
-import { SimulatorPreview } from './components/SimulatorPreview';
 import { UseCases } from './components/UseCases';
 import { Profiles } from './components/Profiles';
 
@@ -18,7 +17,6 @@ export function LandingPage() {
 
       <main id="main-content">
         <Hero />
-        <SimulatorPreview />
         <UseCases />
         <Profiles />
       </main>

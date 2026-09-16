@@ -106,9 +106,9 @@ export function ReportsDemo({ accessible }: DemoComponentProps) {
             Ver todos los tickets
           </a>
         ) : (
-          // A11Y-DEFECT: link whose only content is an aria-hidden icon → no accessible
-          // name (empty link). WCAG 2.4.4 / 4.1.2
-          <a href="#all" style={{ fontSize: '13px', color: '#c7cfda' }}>
+          // A11Y-DEFECT: empty link (only an aria-hidden icon, no accessible name — 2.4.4 /
+          // 4.1.2) AND its id "all" collides with the first form field → duplicate id (4.1.1)
+          <a id="all" href="#all" style={{ fontSize: '13px', color: '#c7cfda' }}>
             <span aria-hidden="true">↗</span>
           </a>
         )}
@@ -146,7 +146,7 @@ export function ReportsDemo({ accessible }: DemoComponentProps) {
         )}
 
         <div style={{ display: 'grid', gap: '12px' }}>
-          {reportFields.map((field) => (
+          {reportFields.map((field, i) => (
             <div key={field.id}>
               {accessible && (
                 <label htmlFor={`rp-${field.id}`} style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: '#0f172a', marginBottom: '4px' }}>
@@ -155,7 +155,10 @@ export function ReportsDemo({ accessible }: DemoComponentProps) {
               )}
               <input
                 // A11Y-DEFECT (broken): placeholder-only, no <label>/aria-label. WCAG 1.3.1 / 4.1.2
-                id={accessible ? `rp-${field.id}` : undefined}
+                // Broken also uses a positive tabindex on the first field → scrambled focus
+                // order (2.4.3), and a duplicate id shared with the "See all" link.
+                id={accessible ? `rp-${field.id}` : i === 0 ? 'all' : undefined}
+                tabIndex={!accessible && i === 0 ? 3 : undefined}
                 type={field.type}
                 placeholder={field.placeholder}
                 autoComplete={field.autoComplete}
@@ -170,6 +173,29 @@ export function ReportsDemo({ accessible }: DemoComponentProps) {
               />
             </div>
           ))}
+
+          {/* Priority selector. Broken: <select> with no associated label/name. WCAG 4.1.2 */}
+          <div>
+            {accessible && (
+              <label htmlFor="rp-priority" style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: '#0f172a', marginBottom: '4px' }}>
+                Prioridad
+              </label>
+            )}
+            <select
+              id={accessible ? 'rp-priority' : undefined}
+              aria-label={accessible ? 'Prioridad del reporte' : undefined}
+              defaultValue="Media"
+              style={
+                accessible
+                  ? { height: '42px', width: '100%', padding: '0 10px', border: '1px solid #64748b', borderRadius: '10px', fontSize: '14px', boxSizing: 'border-box', background: '#fff' }
+                  : { height: '26px', width: '100%', padding: '2px 8px', border: '1px solid #e2e8f0', borderRadius: '4px', fontSize: '13px', boxSizing: 'border-box' }
+              }
+            >
+              <option>Crítica</option>
+              <option>Alta</option>
+              <option>Media</option>
+            </select>
+          </div>
         </div>
 
         {accessible && (

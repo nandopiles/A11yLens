@@ -39,7 +39,8 @@ export function CheckoutDemo({ accessible }: DemoComponentProps) {
             L
           </span>
           <div>
-            <div className="text-base font-bold text-slate-900">{storeName}</div>
+            {/* Broken: this id collides with the "Cifrado" badge below → duplicate id. WCAG 4.1.1 */}
+            <div id={accessible ? 'co-store-name' : 'co-tag'} className="text-base font-bold text-slate-900">{storeName}</div>
             {/* Broken: 11px grey #cbd5e1 on white ≈ 1.5:1, unreadable. Accessible: darker. */}
             <div
               className="font-mono text-[11px]"
@@ -59,6 +60,7 @@ export function CheckoutDemo({ accessible }: DemoComponentProps) {
             {accessible ? '?' : <span aria-hidden="true">?</span>}
           </button>
           <span
+            id={accessible ? 'co-secure-badge' : 'co-tag'}
             style={{ fontSize: '11px', fontWeight: 700, color: accessible ? '#3730a3' : '#a5b4fc', background: '#eef2ff', padding: '4px 10px', borderRadius: '9999px' }}
           >
             🔒 Cifrado
@@ -121,6 +123,30 @@ export function CheckoutDemo({ accessible }: DemoComponentProps) {
                 </div>
               );
             })}
+
+            {/* Country selector. Broken: a <select> with no associated label/name. WCAG 4.1.2 */}
+            <div>
+              {accessible && (
+                <label htmlFor="co-country" style={{ display: 'block', fontSize: '13px', fontWeight: 600, color: '#0f172a', marginBottom: '4px' }}>
+                  País de facturación
+                </label>
+              )}
+              <select
+                id={accessible ? 'co-country' : undefined}
+                aria-label={accessible ? 'País de facturación' : undefined}
+                autoComplete={accessible ? 'country-name' : undefined}
+                defaultValue="ES"
+                style={
+                  accessible
+                    ? { height: '44px', width: '100%', padding: '0 12px', border: '1px solid #64748b', borderRadius: '10px', fontSize: '15px', boxSizing: 'border-box', background: '#fff' }
+                    : { height: '24px', width: '100%', padding: '2px 6px', border: '1px solid #e2e8f0', borderRadius: '4px', fontSize: '13px', boxSizing: 'border-box' }
+                }
+              >
+                <option value="ES">España</option>
+                <option value="FR">Francia</option>
+                <option value="PT">Portugal</option>
+              </select>
+            </div>
           </fieldset>
         </div>
 
@@ -175,6 +201,26 @@ export function CheckoutDemo({ accessible }: DemoComponentProps) {
               <dd>{orderTotal.value}</dd>
             </div>
           </dl>
+
+          {/* Promo row. Broken: an <a> with a positive tabindex (breaks focus order) AND an
+              invalid ARIA role. Accessible: a plain, correctly-ordered link. */}
+          <div className="mt-3 text-sm">
+            {accessible ? (
+              <a href="#promo" style={{ color: '#3730a3', fontWeight: 600 }}>
+                ¿Tienes un código promocional?
+              </a>
+            ) : (
+              // A11Y-DEFECT: tabindex positivo (2.4.3) + role ARIA inexistente (4.1.2)
+              <a
+                href="#promo"
+                tabIndex={5}
+                role="buttonish"
+                style={{ color: '#a5b4fc', fontWeight: 600 }}
+              >
+                ¿Tienes un código promocional?
+              </a>
+            )}
+          </div>
 
           {accessible && (
             <style>{`.a11y-input:focus-visible{outline:3px solid #4338ca;outline-offset:2px}.a11y-pay:focus-visible{outline:3px solid #0f172a;outline-offset:2px}`}</style>

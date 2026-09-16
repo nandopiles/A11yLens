@@ -22,7 +22,15 @@ export function DashboardDemo({ accessible }: DemoComponentProps) {
         <div>
           <div className="flex items-center gap-2">
             <span aria-hidden="true" style={{ fontSize: '18px' }}>📡</span>
-            <span className="text-lg font-bold text-slate-900">{boardTitle}</span>
+            {/* Broken: heading whose text is inside an aria-hidden span → empty accessible
+                name (empty-heading). Accessible: a real <h2> with visible text. WCAG 1.3.1 */}
+            {accessible ? (
+              <h2 className="text-lg font-bold text-slate-900" style={{ margin: 0 }}>{boardTitle}</h2>
+            ) : (
+              <h2 className="text-lg font-bold text-slate-900" style={{ margin: 0 }}>
+                <span aria-hidden="true">{boardTitle}</span>
+              </h2>
+            )}
           </div>
           {/* Broken: #c2cad6 hint ~1.9:1. Accessible: #475569 ~7:1. WCAG 1.4.3 */}
           <p className="mt-0.5 text-sm" style={{ color: accessible ? '#475569' : '#c2cad6' }}>{boardHint}</p>
@@ -47,6 +55,8 @@ export function DashboardDemo({ accessible }: DemoComponentProps) {
       </div>
 
       <ul
+        // Broken: an ARIA attribute that doesn't exist → aria-valid-attr. WCAG 4.1.2
+        {...(!accessible ? { 'aria-livee': 'polite' } : { 'aria-label': 'Lista de servicios' })}
         style={{ listStyle: 'none', margin: 0, padding: 0, border: '1px solid #e2e8f0', borderRadius: '14px', overflow: 'hidden', background: '#fff' }}
       >
         {services.map((service, index) => {
@@ -86,6 +96,15 @@ export function DashboardDemo({ accessible }: DemoComponentProps) {
               <span className="font-mono text-xs" style={{ width: '52px', textAlign: 'right', flex: 'none', color: accessible ? '#334155' : '#c2cad6' }}>
                 {service.latencyMs > 0 ? `${service.latencyMs} ms` : '—'}
               </span>
+
+              {/* Per-row action. Broken: an icon-only button with no accessible name. WCAG 4.1.2 */}
+              <button
+                type="button"
+                aria-label={accessible ? `Reintentar ${service.name}` : undefined}
+                style={{ flex: 'none', width: '30px', height: '30px', borderRadius: '8px', border: '1px solid #e2e8f0', background: '#fff', cursor: 'pointer', color: accessible ? '#334155' : '#94a3b8' }}
+              >
+                <span aria-hidden="true">↻</span>
+              </button>
             </li>
           );
         })}
