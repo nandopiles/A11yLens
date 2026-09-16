@@ -55,7 +55,7 @@ describe('SimulationEngine', () => {
     const log: string[] = [];
     const { registry, root } = setup(log);
     const engine = new SimulationEngine(registry, () => root);
-    expect(() => engine.toggleProfile('deafness')).toThrow(/unknown profile/);
+    expect(() => engine.toggleProfile('nonexistent' as ProfileId)).toThrow(/unknown profile/);
   });
 
   it('applies active profiles in category order (visual → cognitive → motor)', () => {

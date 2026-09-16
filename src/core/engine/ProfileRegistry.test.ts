@@ -14,10 +14,10 @@ function fakeProfile(id: ProfileId): AccessibilityProfile {
 describe('ProfileRegistry', () => {
   it('registers and resolves by id', () => {
     const registry = new ProfileRegistry();
-    const profile = fakeProfile('low-vision');
+    const profile = fakeProfile('screen-reader');
     registry.register(profile);
-    expect(registry.has('low-vision')).toBe(true);
-    expect(registry.get('low-vision')).toBe(profile);
+    expect(registry.has('screen-reader')).toBe(true);
+    expect(registry.get('screen-reader')).toBe(profile);
   });
 
   it('rejects duplicate ids', () => {
@@ -34,10 +34,10 @@ describe('ProfileRegistry', () => {
   it('lists profiles in insertion order', () => {
     const registry = new ProfileRegistry();
     registry.register(fakeProfile('color-blindness'));
-    registry.register(fakeProfile('deafness'));
+    registry.register(fakeProfile('screen-reader'));
     expect(registry.list().map((p) => p.metadata.id)).toEqual([
       'color-blindness',
-      'deafness',
+      'screen-reader',
     ]);
   });
 });

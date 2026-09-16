@@ -16,13 +16,6 @@ const profiles: ProfileCard[] = [
       'Simulación de fotorreceptores para protanopia (rojo), deuteranopia (verde) y tritanopia (azul) usando filtros nativos SVG feColorMatrix.',
   },
   {
-    id: 'low-vision',
-    icon: 'eye-off',
-    title: 'Baja visión y visión de túnel',
-    description:
-      'Emula la reducción de agudeza y sensibilidad al contraste con desenfoque, menos contraste y una ampliación opcional de la vista previa.',
-  },
-  {
     id: 'dyslexia',
     icon: 'spellcheck',
     title: 'Dislexia',
@@ -36,19 +29,13 @@ const profiles: ProfileCard[] = [
     description:
       'Inyecta oscilación en el puntero y reduce la precisión efectiva sobre los objetivos, revelando dianas demasiado pequeñas o demasiado juntas.',
   },
-  {
-    id: 'deafness',
-    icon: 'signal',
-    title: 'Sordera / sin subtítulos',
-    description:
-      'Silencia las señales de audio y desactiva los subtítulos, de modo que la información solo sonora se vuelve inaccesible y se evidencia la necesidad de alternativas textuales.',
-  },
+
   {
     id: 'screen-reader',
     icon: 'people',
     title: 'Lector de pantalla',
     description:
-      'Presenta una lectura linealizada y solo semántica del DOM, exponiendo etiquetas ausentes, orden de encabezados incorrecto y estructura no semántica.',
+      'Cuando la visión es limitada, no difumina: lee la página apartado por apartado en voz alta, exponiendo etiquetas ausentes, encabezados desordenados y estructura no semántica.',
   },
 ];
 

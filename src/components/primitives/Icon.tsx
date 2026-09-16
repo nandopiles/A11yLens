@@ -19,7 +19,8 @@ export type IconName =
   | 'eye-off'
   | 'spellcheck'
   | 'touch'
-  | 'shopping-bag';
+  | 'shopping-bag'
+  | 'sparkle';
 
 const paths: Record<IconName, JSX.Element> = {
   bolt: <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" />,
@@ -90,6 +91,12 @@ const paths: Record<IconName, JSX.Element> = {
     <>
       <path d="M6 8h12l-1 12H7L6 8Z" />
       <path d="M9 8a3 3 0 0 1 6 0" />
+    </>
+  ),
+  sparkle: (
+    <>
+      <path d="M12 3c.4 3 1.9 4.6 5 5-3.1.4-4.6 2-5 5-.4-3-1.9-4.6-5-5 3.1-.4 4.6-2 5-5Z" />
+      <path d="M18 14c.2 1.4 1 2.2 2.5 2.5-1.5.3-2.3 1.1-2.5 2.5-.2-1.4-1-2.2-2.5-2.5 1.5-.3 2.3-1.1 2.5-2.5Z" />
     </>
   ),
 };

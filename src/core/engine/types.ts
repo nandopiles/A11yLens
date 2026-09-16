@@ -6,14 +6,12 @@
  * `.kiro/specs/core-simulation-engine/design.md`.
  */
 
-export type ProfileCategory = 'visual' | 'motor' | 'cognitive' | 'auditory';
+export type ProfileCategory = 'visual' | 'motor' | 'cognitive';
 
 export type ProfileId =
   | 'color-blindness'
-  | 'low-vision'
   | 'dyslexia'
   | 'tremor'
-  | 'deafness'
   | 'screen-reader';
 
 export interface ProfileMetadata {
@@ -57,5 +55,4 @@ export const CATEGORY_ORDER: readonly ProfileCategory[] = [
   'visual',
   'cognitive',
   'motor',
-  'auditory',
 ];

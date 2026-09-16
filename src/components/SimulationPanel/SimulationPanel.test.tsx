@@ -26,7 +26,7 @@ vi.mock('@/store/simulationStore', () => {
         },
       },
       {
-        metadata: { id: 'low-vision', name: 'Low vision', description: 'lv', category: 'visual' },
+        metadata: { id: 'screen-reader', name: 'Screen reader', description: 'sr', category: 'visual' },
       },
       { metadata: { id: 'tremor', name: 'Motor tremor', description: 'tr', category: 'motor' } },
       { metadata: { id: 'dyslexia', name: 'Dyslexia', description: 'dy', category: 'cognitive' } },
@@ -69,6 +69,21 @@ describe('SimulationPanel', () => {
     expect(toggleProfile).toHaveBeenCalledWith('color-blindness', { variant: 'deuteranopia' });
   });
 
+  it('clicking the switch once fires exactly one toggle (no label double-fire)', () => {
+    // Regression guard: the profile name must NOT be an htmlFor <label> pointing at the
+    // switch button, which would relay a second synthetic click and toggle twice.
+    render(<SimulationPanel />);
+    fireEvent.click(screen.getByRole('switch', { name: /motor tremor/i }));
+    expect(toggleProfile).toHaveBeenCalledTimes(1);
+    expect(toggleProfile).toHaveBeenCalledWith('tremor', { intensity: 'moderate' });
+  });
+
+  it('clicking the profile name does not toggle it (name is not a control)', () => {
+    render(<SimulationPanel />);
+    fireEvent.click(screen.getByText('Motor tremor'));
+    expect(toggleProfile).not.toHaveBeenCalled();
+  });
+
   it('switch exposes role and aria-checked reflecting active state', () => {
     state.activeProfiles = [{ id: 'tremor' }];
     render(<SimulationPanel />);
@@ -89,14 +104,16 @@ describe('SimulationPanel', () => {
   it('changing intensity while active calls setProfileOptions live', () => {
     state.activeProfiles = [{ id: 'tremor', options: { intensity: 'moderate' } }];
     render(<SimulationPanel />);
-    const tremorRow = screen.getByText('Motor tremor').closest('div')!.parentElement!
-      .parentElement!;
+    // Find the tremor row via its switch, then walk up to the row container that also
+    // holds its intensity control, and click "Severa" within it.
+    const tremorSwitch = screen.getByRole('switch', { name: /motor tremor/i });
+    const tremorRow = tremorSwitch.closest('div.border-l-2') as HTMLElement;
     fireEvent.click(within(tremorRow).getByLabelText(/severa/i));
     expect(setProfileOptions).toHaveBeenCalledWith('tremor', { intensity: 'severe' });
   });
 
   it('shows the active count and Reset calls reset()', () => {
-    state.activeProfiles = [{ id: 'tremor' }, { id: 'low-vision' }];
+    state.activeProfiles = [{ id: 'tremor' }, { id: 'screen-reader' }];
     render(<SimulationPanel />);
     expect(screen.getByText('2 activos')).toBeInTheDocument();
     fireEvent.click(screen.getByRole('button', { name: /restablecer/i }));

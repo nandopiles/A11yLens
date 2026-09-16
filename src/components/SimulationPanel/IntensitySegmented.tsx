@@ -45,10 +45,17 @@ export function IntensitySegmented({
               className={[
                 'flex-1 cursor-pointer px-2 py-1 text-center text-body-sm transition-colors',
                 'border-l border-hairline first:border-l-0',
+                // Focus ring lives on the label so the native radio dot never shows.
+                'focus-within:outline-none focus-within:ring-2 focus-within:ring-primary focus-within:ring-inset',
                 checked ? 'bg-ink text-white font-medium' : 'bg-canvas text-ink-soft hover:bg-hover',
                 disabled ? 'cursor-not-allowed opacity-50' : '',
               ].join(' ')}
             >
+              {/*
+                Radio kept fully hidden (not sr-only-focusable) so the native dot never
+                appears on focus — the black filled segment IS the selected state. The label
+                shows focus via focus-within, and the input stays operable + accessible.
+              */}
               <input
                 type="radio"
                 name={name}
@@ -56,7 +63,7 @@ export function IntensitySegmented({
                 checked={checked}
                 onChange={() => onChange(level)}
                 disabled={disabled}
-                className="sr-only-focusable"
+                className="sr-only"
               />
               {LEVEL_LABELS[level]}
             </label>

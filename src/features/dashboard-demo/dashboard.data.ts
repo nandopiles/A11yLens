@@ -1,19 +1,36 @@
-/** Repository: mock content for the dashboard demo. */
+/** Repository: mock content for the dashboard demo (service status board). */
 
-export interface Series {
+export type ServiceStatus = 'up' | 'down';
+
+export interface ServiceRow {
   id: string;
-  /** Category is conveyed only by this color (intentional defect). */
-  color: string;
-  /** Bar heights as percentages. */
-  values: number[];
+  name: string;
+  region: string;
+  /**
+   * Health is conveyed ONLY by `statusColor` (intentional defect): green = healthy,
+   * red = down. There is no icon, text label, or shape difference — so under
+   * protanopia/deuteranopia the down service becomes indistinguishable.
+   */
+  status: ServiceStatus;
+  statusColor: string;
+  /** Latency, shown as a number only (not color-coded). */
+  latencyMs: number;
 }
 
-export const series: Series[] = [
-  { id: 's1', color: '#16a34a', values: [40, 55, 30, 70, 60] },
-  { id: 's2', color: '#dc2626', values: [60, 35, 65, 45, 80] },
-  { id: 's3', color: '#2563eb', values: [25, 45, 50, 35, 40] },
+/** Green healthy dot vs red down dot — the only signal of which service is failing. */
+const HEALTHY = '#16a34a';
+const DOWN = '#dc2626';
+
+export const services: ServiceRow[] = [
+  { id: 'auth', name: 'Autenticación', region: 'eu-west-1', status: 'up', statusColor: HEALTHY, latencyMs: 42 },
+  { id: 'payments', name: 'Pagos', region: 'eu-west-1', status: 'up', statusColor: HEALTHY, latencyMs: 55 },
+  { id: 'search', name: 'Búsqueda', region: 'us-east-1', status: 'down', statusColor: DOWN, latencyMs: 0 },
+  { id: 'media', name: 'Media / CDN', region: 'us-east-1', status: 'up', statusColor: HEALTHY, latencyMs: 38 },
+  { id: 'notifications', name: 'Notificaciones', region: 'ap-south-1', status: 'up', statusColor: HEALTHY, latencyMs: 61 },
 ];
 
-export const legendColors = series.map((s) => s.color);
+/** The one service the user is asked to spot. Used by tests as the source of truth. */
+export const downServiceId = 'search';
 
-export const periods = ['Q1', 'Q2', 'Q3', 'Q4', 'Q5'];
+export const boardTitle = 'Estado de los servicios';
+export const boardHint = 'Un servicio está caído. ¿Cuál?';

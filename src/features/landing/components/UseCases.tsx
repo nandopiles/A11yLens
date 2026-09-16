@@ -36,9 +36,9 @@ const useCases: UseCase[] = [
     icon: 'people',
     title: 'Feed social dinámico',
     description:
-      'Consumo de contenido con scroll infinito, texto de bajo contraste sobre fotos y análisis de subtítulos sincronizados.',
+      'Encuesta y "me gusta" codificados solo por color, fotos sin texto alternativo, nota de voz sin transcripción, scroll automático y texto denso.',
     difficulty: 'Media',
-    criteria: ['Contraste mínimo (1.4.3)', 'Subtítulos en directo (1.2.4)', 'Pausar, detener, ocultar (2.2.2)'],
+    criteria: ['Uso del color (1.4.1)', 'Contenido no textual (1.1.1)', 'Pausar, detener, ocultar (2.2.2)'],
     scenario: 'Escenario n.º 02 · Social y multimedia',
   },
   {
@@ -54,12 +54,12 @@ const useCases: UseCase[] = [
   {
     id: 'dashboard',
     icon: 'signal',
-    title: 'Panel de analítica y gráficos',
+    title: 'Panel de estado de servicios',
     description:
-      'Diagramas de dispersión y series temporales que dependen solo del color, probados para personas con daltonismo y baja visión.',
+      'Un servicio está caído, pero el estado solo se indica con un punto verde o rojo. Con daltonismo la tarea se vuelve imposible: no puedes saber cuál falla.',
     difficulty: 'Intermedia',
     criteria: ['Uso del color (1.4.1)', 'Contraste no textual (1.4.11)', 'Información y relaciones (1.3.1)'],
-    scenario: 'Escenario n.º 04 · Analítica SaaS',
+    scenario: 'Escenario n.º 04 · Operaciones / SRE',
   },
 ];
 

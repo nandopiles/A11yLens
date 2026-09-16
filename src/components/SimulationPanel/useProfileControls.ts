@@ -16,11 +16,9 @@ export interface ProfileControlConfig {
  */
 export const PROFILE_CONTROL_CONFIG: Record<ProfileId, ProfileControlConfig> = {
   'color-blindness': { kind: 'variant', defaults: { variant: 'deuteranopia' } },
-  'low-vision': { kind: 'intensity', defaults: { intensity: 'moderate' } },
   dyslexia: { kind: 'none', defaults: {} },
   tremor: { kind: 'intensity', defaults: { intensity: 'moderate' } },
-  deafness: { kind: 'none', defaults: {} },
-  'screen-reader': { kind: 'none', defaults: {} },
+  'screen-reader': { kind: 'intensity', defaults: { intensity: 'moderate' } },
 };
 
 function seedDefaults(): Record<ProfileId, ProfileOptions> {
