@@ -39,8 +39,8 @@ const filterId = (variant: ColorBlindnessVariant) => `a11ylens-cb-${variant}`;
 export class ColorBlindnessProfile implements AccessibilityProfile {
   readonly metadata: ProfileMetadata = {
     id: 'color-blindness',
-    name: 'Color blindness',
-    description: 'Simulates protanopia, deuteranopia, or tritanopia with real color matrices.',
+    name: 'Daltonismo',
+    description: 'Simula protanopia, deuteranopia o tritanopia con matrices de color reales.',
     category: 'visual',
   };
 

@@ -24,12 +24,12 @@ describe('SimulatorPage', () => {
 
   it('swaps demos by route and shows the goal label', () => {
     renderAt('/simulate/dashboard');
-    expect(screen.getByRole('heading', { name: /Analytics dashboard/i })).toBeInTheDocument();
-    expect(screen.getByText(/Goal: Read the chart/i)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Panel de analítica/i })).toBeInTheDocument();
+    expect(screen.getByText(/Objetivo: Leer el gráfico/i)).toBeInTheDocument();
   });
 
   it('falls back to checkout for an unknown demo id', () => {
     renderAt('/simulate/nope');
-    expect(screen.getByRole('heading', { name: /Express checkout/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Pago exprés/i })).toBeInTheDocument();
   });
 });

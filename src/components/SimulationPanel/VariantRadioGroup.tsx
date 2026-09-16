@@ -18,9 +18,9 @@ export function VariantRadioGroup({
   return (
     <fieldset className="mt-2" disabled={disabled}>
       <legend className="mb-1 font-mono text-label-badge uppercase tracking-wider text-ink-soft">
-        Variant
+        Variante
       </legend>
-      <div role="radiogroup" aria-label="Color blindness variant" className="flex flex-col gap-1">
+      <div role="radiogroup" aria-label="Variante de daltonismo" className="flex flex-col gap-1">
         {VARIANTS.map((variant) => (
           <label
             key={variant}

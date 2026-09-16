@@ -14,17 +14,17 @@ export interface OrderLine {
 }
 
 export const checkoutFields: CheckoutField[] = [
-  { id: 'card', label: 'Card number', placeholder: 'Card number', autoComplete: 'cc-number', maxLength: 19 },
-  { id: 'exp', label: 'Expiry', placeholder: 'MM / YY', autoComplete: 'cc-exp', maxLength: 7 },
+  { id: 'card', label: 'Número de tarjeta', placeholder: 'Número de tarjeta', autoComplete: 'cc-number', maxLength: 19 },
+  { id: 'exp', label: 'Caducidad', placeholder: 'MM / AA', autoComplete: 'cc-exp', maxLength: 7 },
   { id: 'cvc', label: 'CVC', placeholder: 'CVC', autoComplete: 'cc-csc', maxLength: 4 },
-  { id: 'name', label: 'Name on card', placeholder: 'Name on card', autoComplete: 'cc-name' },
+  { id: 'name', label: 'Nombre en la tarjeta', placeholder: 'Nombre en la tarjeta', autoComplete: 'cc-name' },
 ];
 
 export const orderLines: OrderLine[] = [
-  { label: 'Subtotal (2 items)', value: '$129.00' },
-  { label: 'Express shipping', value: 'Free' },
+  { label: 'Subtotal (2 artículos)', value: '129,00 €' },
+  { label: 'Envío exprés', value: 'Gratis' },
 ];
 
-export const orderTotal: OrderLine = { label: 'Total', value: '$129.00 USD' };
+export const orderTotal: OrderLine = { label: 'Total', value: '129,00 € EUR' };
 
 export const storeName = 'Lumina Store';

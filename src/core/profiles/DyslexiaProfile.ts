@@ -24,8 +24,8 @@ export interface DyslexiaOptions extends ProfileOptions {
 export class DyslexiaProfile implements AccessibilityProfile {
   readonly metadata: ProfileMetadata = {
     id: 'dyslexia',
-    name: 'Dyslexia',
-    description: 'Alters spacing and periodically shuffles interior letters of words.',
+    name: 'Dislexia',
+    description: 'Altera el espaciado y reordena periódicamente las letras interiores de las palabras.',
     category: 'cognitive',
   };
 

@@ -8,21 +8,21 @@ export interface NavItem {
 }
 
 export const primaryNav: NavItem[] = [
-  { id: 'products', label: 'Products', tabIndex: 3 },
-  { id: 'solutions', label: 'Solutions', tabIndex: 1 },
-  { id: 'pricing', label: 'Pricing', tabIndex: 4 },
-  { id: 'docs', label: 'Docs', tabIndex: 2 },
+  { id: 'products', label: 'Productos', tabIndex: 3 },
+  { id: 'solutions', label: 'Soluciones', tabIndex: 1 },
+  { id: 'pricing', label: 'Precios', tabIndex: 4 },
+  { id: 'docs', label: 'Documentación', tabIndex: 2 },
 ];
 
 export const dropdownItems: string[] = [
-  'Overview',
-  'Analytics',
-  'Integrations',
-  'Changelog',
+  'Resumen',
+  'Analítica',
+  'Integraciones',
+  'Registro de cambios',
 ];
 
 export const modalCopy = {
-  title: 'Sign in',
-  body: 'Enter your credentials to access the dashboard.',
-  submit: 'Sign in',
+  title: 'Iniciar sesión',
+  body: 'Introduce tus credenciales para acceder al panel.',
+  submit: 'Iniciar sesión',
 };

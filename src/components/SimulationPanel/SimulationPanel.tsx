@@ -27,10 +27,10 @@ export function SimulationPanel() {
         type="button"
         onClick={() => setOpen(true)}
         className="fixed right-4 top-24 z-50 inline-flex items-center gap-2 rounded-md border border-hairline bg-canvas px-3 py-2 text-body-sm font-medium text-ink shadow-overlay"
-        aria-label="Open accessibility simulation controls"
+        aria-label="Abrir los controles de simulación de accesibilidad"
       >
         <Icon name="eye-off" />
-        Simulation
+        Simulación
         {activeCount > 0 && (
           <span className="rounded-full bg-primary px-1.5 font-mono text-label-badge text-white">
             {activeCount}
@@ -42,7 +42,7 @@ export function SimulationPanel() {
 
   return (
     <motion.aside
-      aria-label="Accessibility simulation controls"
+      aria-label="Controles de simulación de accesibilidad"
       initial={reduceMotion ? false : { opacity: 0, x: 16 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: reduceMotion ? 0 : 0.2 }}
@@ -50,12 +50,12 @@ export function SimulationPanel() {
     >
       <header className="flex items-center justify-between gap-2 border-b border-hairline px-3 py-2.5">
         <div className="flex items-center gap-2">
-          <h2 className="text-headline-sm text-ink">Simulation</h2>
+          <h2 className="text-headline-sm text-ink">Simulación</h2>
           <span
             aria-live="polite"
             className="rounded-full border border-hairline bg-panel px-2 font-mono text-label-badge text-ink-muted"
           >
-            {activeCount} active
+            {activeCount} activos
           </span>
         </div>
         <div className="flex items-center gap-1">
@@ -65,12 +65,12 @@ export function SimulationPanel() {
             disabled={activeCount === 0}
             className="rounded px-2 py-1 text-body-sm font-medium text-ink-soft hover:bg-hover disabled:opacity-40"
           >
-            Reset
+            Restablecer
           </button>
           <button
             type="button"
             onClick={() => setOpen(false)}
-            aria-label="Collapse panel"
+            aria-label="Contraer panel"
             className="rounded p-1 text-ink-soft hover:bg-hover"
           >
             <Icon name="arrow-right" />

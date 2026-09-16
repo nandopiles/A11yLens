@@ -38,10 +38,10 @@ export function SimulatorPage() {
           <span className="rotate-180">
             <Icon name="arrow-right" />
           </span>
-          Back to A11yLens
+          Volver a A11yLens
         </Link>
 
-        <nav aria-label="Demo" className="hidden sm:block">
+        <nav aria-label="Demostración" className="hidden sm:block">
           <ul className="flex items-center gap-1">
             {demos.map((d) => {
               const current = d.meta.id === meta.id;
@@ -64,7 +64,7 @@ export function SimulatorPage() {
         </nav>
 
         <span className="font-mono text-label-badge uppercase tracking-wider text-ink-soft">
-          Goal: {meta.goalLabel}
+          Objetivo: {meta.goalLabel}
         </span>
       </header>
 

@@ -24,7 +24,7 @@ describe('checkout demo defects', () => {
   it('has a submit button (goal action) inside a goal-tagged form', () => {
     const { container } = render(<CheckoutDemo />);
     expect(container.querySelector('[data-demo-goal="submit-payment"]')).not.toBeNull();
-    expect(screen.getByRole('button', { name: /confirm and pay/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /confirmar y pagar/i })).toBeInTheDocument();
   });
 });
 

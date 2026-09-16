@@ -32,12 +32,12 @@ export function CheckoutDemo() {
     >
       <div className="mb-4 flex items-center justify-between border-b border-slate-200 pb-3">
         <span className="text-base font-semibold text-slate-900">{storeName}</span>
-        <span className="font-mono text-xs text-slate-500">Step 3 of 3 · Review</span>
+        <span className="font-mono text-xs text-slate-500">Paso 3 de 3 · Revisión</span>
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <fieldset className="space-y-3">
-          <legend className="mb-1 text-sm font-medium text-slate-700">Payment</legend>
+          <legend className="mb-1 text-sm font-medium text-slate-700">Pago</legend>
           {checkoutFields.map((field) => (
             <div key={field.id}>
               {/*
@@ -107,7 +107,7 @@ export function CheckoutDemo() {
               cursor: 'pointer',
             }}
           >
-            Confirm and pay
+            Confirmar y pagar
           </button>
         </div>
       </div>

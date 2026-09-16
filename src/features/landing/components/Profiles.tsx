@@ -11,44 +11,44 @@ const profiles: ProfileCard[] = [
   {
     id: 'color-blindness',
     icon: 'palette',
-    title: 'Color blindness',
+    title: 'Daltonismo',
     description:
-      'Photoreceptor simulation of protanopia (red), deuteranopia (green), and tritanopia (blue) using native SVG feColorMatrix filters.',
+      'Simulación de fotorreceptores para protanopia (rojo), deuteranopia (verde) y tritanopia (azul) usando filtros nativos SVG feColorMatrix.',
   },
   {
     id: 'low-vision',
     icon: 'eye-off',
-    title: 'Low vision & tunnel vision',
+    title: 'Baja visión y visión de túnel',
     description:
-      'Emulates reduced acuity and contrast sensitivity with blur, reduced contrast, and optional magnification of the preview.',
+      'Emula la reducción de agudeza y sensibilidad al contraste con desenfoque, menos contraste y una ampliación opcional de la vista previa.',
   },
   {
     id: 'dyslexia',
     icon: 'spellcheck',
-    title: 'Dyslexia',
+    title: 'Dislexia',
     description:
-      'Periodically jitters and reorders interior letters in long paragraphs to evaluate real typographic legibility.',
+      'Tiembla y reordena periódicamente las letras interiores de los párrafos largos para evaluar la legibilidad tipográfica real.',
   },
   {
     id: 'tremor',
     icon: 'touch',
-    title: 'Motor tremor',
+    title: 'Temblor motor',
     description:
-      'Injects pointer oscillation and reduces effective target precision, exposing hit targets that are too small or too close.',
+      'Inyecta oscilación en el puntero y reduce la precisión efectiva sobre los objetivos, revelando dianas demasiado pequeñas o demasiado juntas.',
   },
   {
     id: 'deafness',
     icon: 'signal',
-    title: 'Deafness / no captions',
+    title: 'Sordera / sin subtítulos',
     description:
-      'Mutes audio cues and disables captions so audio-only information becomes inaccessible, highlighting the need for text alternatives.',
+      'Silencia las señales de audio y desactiva los subtítulos, de modo que la información solo sonora se vuelve inaccesible y se evidencia la necesidad de alternativas textuales.',
   },
   {
     id: 'screen-reader',
     icon: 'people',
-    title: 'Screen reader',
+    title: 'Lector de pantalla',
     description:
-      'Presents a linearized, semantics-only reading of the DOM, exposing missing labels, bad heading order, and non-semantic structure.',
+      'Presenta una lectura linealizada y solo semántica del DOM, exponiendo etiquetas ausentes, orden de encabezados incorrecto y estructura no semántica.',
   },
 ];
 
@@ -61,14 +61,14 @@ export function Profiles() {
     >
       <div className="mb-8 max-w-2xl">
         <span className="font-mono text-label-badge uppercase tracking-wider text-primary">
-          Synthetic impairment matrix
+          Matriz sintética de impedimentos
         </span>
         <h2 id="profiles-heading" className="mt-1 text-headline-md text-ink">
-          Accessibility simulation profiles
+          Perfiles de simulación de accesibilidad
         </h2>
         <p className="mt-1 text-body-md text-ink-soft">
-          Each profile is an interchangeable strategy that transforms the preview in
-          real time. Profiles stack, so you can combine several at once.
+          Cada perfil es una estrategia intercambiable que transforma la vista previa en
+          tiempo real. Los perfiles se apilan, así que puedes combinar varios a la vez.
         </p>
       </div>
 

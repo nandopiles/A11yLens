@@ -21,8 +21,8 @@ const LEVELS: Record<LowVisionIntensity, { blurPx: number; contrast: number }> =
 export class LowVisionProfile implements AccessibilityProfile {
   readonly metadata: ProfileMetadata = {
     id: 'low-vision',
-    name: 'Low vision',
-    description: 'Blurs content and reduces contrast at mild, moderate, or severe levels.',
+    name: 'Baja visión',
+    description: 'Desenfoca el contenido y reduce el contraste en niveles leve, moderado o severo.',
     category: 'visual',
   };
 

@@ -37,7 +37,7 @@ export function NavigationDemo() {
               onClick={() => setDropdownOpen((o) => !o)}
               style={{ cursor: 'pointer', fontSize: '14px', color: '#334155' }}
             >
-              More ▾
+              Más ▾
             </div>
             {dropdownOpen && (
               <div
@@ -70,7 +70,7 @@ export function NavigationDemo() {
           onClick={() => setModalOpen(true)}
           className="rounded border border-slate-300 px-3 py-1 text-sm text-slate-700"
         >
-          Sign in
+          Iniciar sesión
         </button>
       </nav>
 
@@ -109,7 +109,7 @@ export function NavigationDemo() {
             </p>
             <input
               type="email"
-              placeholder="Email"
+              placeholder="Correo electrónico"
               style={{
                 width: '100%',
                 padding: '6px 8px',

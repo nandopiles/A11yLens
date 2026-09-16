@@ -17,28 +17,28 @@ export const feedPosts: FeedPost[] = [
     author: 'Nordic Trails',
     handle: '@nordictrails',
     body:
-      'Just back from three weeks on the fjords and honestly the light up there does something to your sense of time you stop checking the phone you stop counting hours you just walk and the trail keeps unfolding and every ridge looks like the last one until suddenly it does not and the whole valley opens beneath you all at once.',
+      'Recién vuelto de tres semanas en los fiordos y sinceramente la luz de allí arriba le hace algo a tu sentido del tiempo dejas de mirar el móvil dejas de contar las horas solo caminas y el sendero se sigue desplegando y cada cresta parece igual a la anterior hasta que de pronto deja de serlo y todo el valle se abre bajo tus pies de golpe.',
     photoColor: '#3b6ea5',
-    caption: 'Sunrise over the northern ridge',
+    caption: 'Amanecer sobre la cresta norte',
   },
   {
     id: 'p2',
     author: 'Studio Kai',
     handle: '@studiokai',
     body:
-      'New drop this Friday we spent months on the details the stitching the weight of the paper the way the ink sits and we cannot wait for you to hold it in your hands there is nothing like a physical object in a world of screens and we mean that with our whole chest so mark the date and tell a friend.',
+      'Nuevo lanzamiento este viernes pasamos meses en los detalles las costuras el gramaje del papel la forma en que se asienta la tinta y no podemos esperar a que lo tengas en las manos no hay nada como un objeto físico en un mundo de pantallas y lo decimos con toda el alma así que apunta la fecha y avisa a un amigo.',
     photoColor: '#b06a3b',
-    caption: 'Behind the scenes at the studio',
+    caption: 'Entre bastidores en el estudio',
   },
   {
     id: 'p3',
     author: 'City Eats',
     handle: '@cityeats',
     body:
-      'The best meal is the one you did not plan the little place with no sign the owner who insists you try the special the table wobbling on the cobblestones the plate arriving before you finish asking what it is and then that first bite that reorganizes your afternoon around it entirely.',
+      'La mejor comida es la que no planeaste el sitio pequeño sin cartel el dueño que insiste en que pruebes el plato del día la mesa que baila sobre los adoquines el plato que llega antes de que termines de preguntar qué es y entonces ese primer bocado que reorganiza tu tarde entera a su alrededor.',
     photoColor: '#4a7c59',
-    caption: 'Todays special, plated',
+    caption: 'El plato del día, emplatado',
   },
 ];
 
-export const liveBadgeLabel = 'LIVE';
+export const liveBadgeLabel = 'EN VIVO';

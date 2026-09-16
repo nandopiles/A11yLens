@@ -2,10 +2,10 @@ import { Badge } from '@/components/primitives/Badge';
 import { Icon } from '@/components/primitives/Icon';
 
 const navItems = [
-  { label: 'Home', href: '#top', current: true },
-  { label: 'Use cases', href: '#use-cases' },
-  { label: 'Live simulator', href: '#simulator' },
-  { label: 'Profiles', href: '#profiles' },
+  { label: 'Inicio', href: '#top', current: true },
+  { label: 'Casos de uso', href: '#use-cases' },
+  { label: 'Simulador en vivo', href: '#simulator' },
+  { label: 'Perfiles', href: '#profiles' },
 ];
 
 export function SiteHeader() {
@@ -28,7 +28,7 @@ export function SiteHeader() {
             </span>
           </a>
           <div aria-hidden="true" className="hidden h-4 w-px bg-hairline sm:block" />
-          <nav aria-label="Primary" className="hidden md:block">
+          <nav aria-label="Principal" className="hidden md:block">
             <ul className="flex items-center gap-1 text-body-sm font-medium text-ink-soft">
               {navItems.map((item) => (
                 <li key={item.href}>
@@ -55,7 +55,7 @@ export function SiteHeader() {
               aria-hidden="true"
               className="h-1.5 w-1.5 rounded-full bg-emerald-600"
             />
-            WCAG 2.2 target
+            Objetivo WCAG 2.2
           </Badge>
         </div>
       </div>

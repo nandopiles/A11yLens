@@ -15,8 +15,8 @@ export interface ScreenReaderOptions extends ProfileOptions {
 export class ScreenReaderProfile implements AccessibilityProfile {
   readonly metadata: ProfileMetadata = {
     id: 'screen-reader',
-    name: 'Screen reader',
-    description: 'Masks the view and reads the DOM aloud, exposing missing labels.',
+    name: 'Lector de pantalla',
+    description: 'Oculta la vista y lee el DOM en voz alta, exponiendo etiquetas ausentes.',
     category: 'visual',
   };
 
@@ -47,13 +47,14 @@ export class ScreenReaderProfile implements AccessibilityProfile {
         const tag = node.tagName;
         if (tag === 'IMG') {
           const alt = node.getAttribute('alt');
-          out.push(alt && alt.trim() ? `image, ${alt}` : 'image, no description');
+          out.push(alt && alt.trim() ? `imagen, ${alt}` : 'imagen, sin descripción');
         } else if (tag === 'INPUT' || tag === 'BUTTON') {
           const label = node.getAttribute('aria-label');
+          const role = tag === 'INPUT' ? 'campo' : 'botón';
           if (label && label.trim()) {
-            out.push(`${tag.toLowerCase()}, ${label}`);
+            out.push(`${role}, ${label}`);
           } else if (tag === 'INPUT') {
-            out.push('input, no label');
+            out.push('campo, sin etiqueta');
           }
         }
       }
@@ -71,7 +72,7 @@ export class ScreenReaderProfile implements AccessibilityProfile {
     const overlay = root.ownerDocument.createElement('div');
     overlay.setAttribute('data-a11ylens', 'screen-reader-overlay');
     overlay.setAttribute('role', 'status');
-    overlay.textContent = 'Screen reader mode — content is being read aloud';
+    overlay.textContent = 'Modo lector de pantalla — el contenido se está leyendo en voz alta';
     Object.assign(overlay.style, {
       position: 'absolute',
       inset: '0',

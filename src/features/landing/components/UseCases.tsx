@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Badge } from '@/components/primitives/Badge';
 import { Icon, type IconName } from '@/components/primitives/Icon';
 
-type Difficulty = 'High' | 'Medium' | 'Intermediate';
+type Difficulty = 'Alta' | 'Media' | 'Intermedia';
 
 interface UseCase {
   id: string;
@@ -15,51 +15,51 @@ interface UseCase {
 }
 
 const difficultyTone: Record<Difficulty, 'danger' | 'warning' | 'info'> = {
-  High: 'danger',
-  Medium: 'warning',
-  Intermediate: 'info',
+  Alta: 'danger',
+  Media: 'warning',
+  Intermedia: 'info',
 };
 
 const useCases: UseCase[] = [
   {
     id: 'checkout',
     icon: 'lock',
-    title: 'Express checkout form',
+    title: 'Formulario de pago exprés',
     description:
-      'Transactional payment gateway, autofill fields, and card validation under severe motor stress, micro-tremors, and arbitrary time limits.',
-    difficulty: 'High',
-    criteria: ['Target Size (2.5.8)', 'Timing Adjustable (2.2.1)', 'Error Identification (3.3.1)'],
-    scenario: 'Scenario #01 · E-commerce',
+      'Pasarela de pago transaccional, campos de autocompletado y validación de tarjeta bajo estrés motor severo, microtemblores y límites de tiempo arbitrarios.',
+    difficulty: 'Alta',
+    criteria: ['Tamaño del objetivo (2.5.8)', 'Tiempo ajustable (2.2.1)', 'Identificación de errores (3.3.1)'],
+    scenario: 'Escenario n.º 01 · Comercio electrónico',
   },
   {
     id: 'feed',
     icon: 'people',
-    title: 'Dynamic social feed',
+    title: 'Feed social dinámico',
     description:
-      'Infinite-scroll media consumption, low-contrast text over photos, and synchronized caption analysis.',
-    difficulty: 'Medium',
-    criteria: ['Contrast Minimum (1.4.3)', 'Captions Live (1.2.4)', 'Pause, Stop, Hide (2.2.2)'],
-    scenario: 'Scenario #02 · Social & media',
+      'Consumo de contenido con scroll infinito, texto de bajo contraste sobre fotos y análisis de subtítulos sincronizados.',
+    difficulty: 'Media',
+    criteria: ['Contraste mínimo (1.4.3)', 'Subtítulos en directo (1.2.4)', 'Pausar, detener, ocultar (2.2.2)'],
+    scenario: 'Escenario n.º 02 · Social y multimedia',
   },
   {
     id: 'navigation',
     icon: 'compass',
-    title: 'Complex navigation menu',
+    title: 'Menú de navegación complejo',
     description:
-      'Multi-level mega-menu with nested subcategories operated purely by keyboard, with no focus traps and correct focus order.',
-    difficulty: 'High',
-    criteria: ['Keyboard (2.1.1)', 'No Keyboard Trap (2.1.2)', 'Focus Order (2.4.3)'],
-    scenario: 'Scenario #03 · Enterprise portal',
+      'Megamenú multinivel con subcategorías anidadas manejado únicamente con teclado, sin trampas de foco y con un orden de foco correcto.',
+    difficulty: 'Alta',
+    criteria: ['Teclado (2.1.1)', 'Sin trampa de teclado (2.1.2)', 'Orden del foco (2.4.3)'],
+    scenario: 'Escenario n.º 03 · Portal empresarial',
   },
   {
     id: 'dashboard',
     icon: 'signal',
-    title: 'Analytics dashboard & charts',
+    title: 'Panel de analítica y gráficos',
     description:
-      'Scatter plots and time series that rely on color alone, tested for users with color blindness and low vision.',
-    difficulty: 'Intermediate',
-    criteria: ['Use of Color (1.4.1)', 'Non-text Contrast (1.4.11)', 'Info & Relationships (1.3.1)'],
-    scenario: 'Scenario #04 · SaaS analytics',
+      'Diagramas de dispersión y series temporales que dependen solo del color, probados para personas con daltonismo y baja visión.',
+    difficulty: 'Intermedia',
+    criteria: ['Uso del color (1.4.1)', 'Contraste no textual (1.4.11)', 'Información y relaciones (1.3.1)'],
+    scenario: 'Escenario n.º 04 · Analítica SaaS',
   },
 ];
 
@@ -73,19 +73,19 @@ export function UseCases() {
       <div className="mb-6 flex flex-col justify-between gap-3 pb-6 sm:flex-row sm:items-end">
         <div>
           <span className="font-mono text-label-badge uppercase tracking-wider text-ink-soft">
-            Testing environments
+            Entornos de prueba
           </span>
           <h2 id="use-cases-heading" className="mt-1 text-headline-md text-ink">
-            Preconfigured use cases
+            Casos de uso preconfigurados
           </h2>
           <p className="mt-1 max-w-xl text-body-md text-ink-soft">
-            Isolate real friction in critical components before it hurts conversion
-            or triggers accessibility penalties.
+            Aísla la fricción real en componentes críticos antes de que perjudique la
+            conversión o acarree sanciones de accesibilidad.
           </p>
         </div>
         <Badge tone="success">
           <Icon name="check" />
-          Mapped to WCAG 2.2 success criteria
+          Asignado a los criterios de conformidad WCAG 2.2
         </Badge>
       </div>
 
@@ -104,7 +104,7 @@ export function UseCases() {
                     </span>
                   </span>
                   <Badge tone={difficultyTone[useCase.difficulty]}>
-                    Difficulty: {useCase.difficulty}
+                    Dificultad: {useCase.difficulty}
                   </Badge>
                 </div>
                 <h3 className="text-headline-sm text-ink">{useCase.title}</h3>
@@ -122,9 +122,9 @@ export function UseCases() {
                 <Link
                   to={`/simulate/${useCase.id}`}
                   className="inline-flex items-center gap-1 rounded font-medium text-primary hover:text-primary-strong"
-                  aria-label={`Open case: ${useCase.title}`}
+                  aria-label={`Abrir caso: ${useCase.title}`}
                 >
-                  Open case
+                  Abrir caso
                   <Icon name="arrow-right" />
                 </Link>
               </div>

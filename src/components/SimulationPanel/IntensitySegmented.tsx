@@ -1,6 +1,13 @@
 const LEVELS = ['mild', 'moderate', 'severe'] as const;
 export type Intensity = (typeof LEVELS)[number];
 
+/** Spanish display labels for each intensity level (the enum values stay in English). */
+const LEVEL_LABELS: Record<Intensity, string> = {
+  mild: 'Leve',
+  moderate: 'Moderada',
+  severe: 'Severa',
+};
+
 interface IntensitySegmentedProps {
   value: Intensity;
   onChange: (value: Intensity) => void;
@@ -23,11 +30,11 @@ export function IntensitySegmented({
   return (
     <fieldset className="mt-2" disabled={disabled}>
       <legend className="mb-1 font-mono text-label-badge uppercase tracking-wider text-ink-soft">
-        Intensity
+        Intensidad
       </legend>
       <div
         role="radiogroup"
-        aria-label="Intensity"
+        aria-label="Intensidad"
         className="flex overflow-hidden rounded border border-hairline"
       >
         {LEVELS.map((level) => {
@@ -36,7 +43,7 @@ export function IntensitySegmented({
             <label
               key={level}
               className={[
-                'flex-1 cursor-pointer px-2 py-1 text-center text-body-sm capitalize transition-colors',
+                'flex-1 cursor-pointer px-2 py-1 text-center text-body-sm transition-colors',
                 'border-l border-hairline first:border-l-0',
                 checked ? 'bg-ink text-white font-medium' : 'bg-canvas text-ink-soft hover:bg-hover',
                 disabled ? 'cursor-not-allowed opacity-50' : '',
@@ -51,7 +58,7 @@ export function IntensitySegmented({
                 disabled={disabled}
                 className="sr-only-focusable"
               />
-              {level}
+              {LEVEL_LABELS[level]}
             </label>
           );
         })}

@@ -35,8 +35,8 @@ describe('ScreenReaderProfile', () => {
     profile.apply(root);
 
     expect(synth.spoken).toContain('Checkout');
-    expect(synth.spoken).toContain('image, no description');
-    expect(synth.spoken).toContain('image, Company logo');
+    expect(synth.spoken).toContain('imagen, sin descripción');
+    expect(synth.spoken).toContain('imagen, Company logo');
   });
 
   it('flags unlabeled inputs', () => {
@@ -44,8 +44,8 @@ describe('ScreenReaderProfile', () => {
     const synth = new FakeSynth();
     const profile = new ScreenReaderProfile(synth);
     profile.apply(root);
-    expect(synth.spoken).toContain('input, no label');
-    expect(synth.spoken).toContain('input, Card number');
+    expect(synth.spoken).toContain('campo, sin etiqueta');
+    expect(synth.spoken).toContain('campo, Card number');
   });
 
   it('masks the content with an overlay', () => {

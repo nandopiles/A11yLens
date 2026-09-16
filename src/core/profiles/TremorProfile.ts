@@ -23,8 +23,8 @@ const LEVELS: Record<TremorIntensity, { amplitude: number; damping: number }> = 
 export class TremorProfile implements AccessibilityProfile {
   readonly metadata: ProfileMetadata = {
     id: 'tremor',
-    name: 'Motor tremor',
-    description: 'Adds smoothed random jitter to a custom rendered cursor.',
+    name: 'Temblor motor',
+    description: 'Añade un temblor aleatorio suavizado a un cursor personalizado.',
     category: 'motor',
   };
 

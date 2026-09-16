@@ -11,10 +11,10 @@ interface Metric {
 }
 
 const metrics: Metric[] = [
-  { icon: 'check', label: 'WCAG engine', value: '2.2 AAA', hint: 'Target coverage' },
-  { icon: 'signal', label: 'Avg. latency', value: '1.8 ms', hint: 'No page reload' },
-  { icon: 'people', label: 'Active profiles', value: '6', hint: 'Visual, motor & cognitive' },
-  { icon: 'bug', label: 'Real audit', value: 'axe-core', hint: 'Standards-based checks' },
+  { icon: 'check', label: 'Motor WCAG', value: '2.2 AAA', hint: 'Cobertura objetivo' },
+  { icon: 'signal', label: 'Latencia media', value: '1.8 ms', hint: 'Sin recargar la página' },
+  { icon: 'people', label: 'Perfiles activos', value: '6', hint: 'Visual, motor y cognitivo' },
+  { icon: 'bug', label: 'Auditoría real', value: 'axe-core', hint: 'Comprobaciones según estándar' },
 ];
 
 export function Hero() {
@@ -23,17 +23,18 @@ export function Hero() {
       <div className="mx-auto max-w-5xl px-4 py-16 text-center sm:px-6 lg:px-8">
         <Badge className="mb-6">
           <span aria-hidden="true" className="h-2 w-2 rounded-full bg-emerald-500" />
-          Interactive digital-empathy tool for WCAG 2.2
+          Herramienta interactiva de empatía digital para WCAG 2.2
         </Badge>
 
         <h1 className="mx-auto max-w-3xl text-headline-lg leading-tight tracking-tight text-ink sm:text-display-hero">
-          Experience what others live when they{' '}
-          <span className="text-primary">browse the web</span>
+          Experimenta lo que viven otras personas cuando{' '}
+          <span className="text-primary">navegan por la web</span>
         </h1>
 
         <p className="mx-auto mt-4 max-w-2xl text-body-lg text-ink-soft">
-          Feel firsthand how people with different visual, motor, and cognitive
-          abilities interact with digital products, before you ship to production.
+          Siente en primera persona cómo interactúan con los productos digitales las
+          personas con distintas capacidades visuales, motoras y cognitivas, antes de
+          pasar a producción.
         </p>
 
         <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
@@ -42,11 +43,11 @@ export function Hero() {
             className="inline-flex items-center justify-center gap-2 rounded-md border border-primary bg-primary px-4 py-2 text-body-md font-medium text-primary-on transition-colors hover:bg-primary-strong"
           >
             <Icon name="play" />
-            Try an interactive simulation
+            Probar una simulación interactiva
           </Link>
           <Button variant="secondary" onClick={() => scrollToId('use-cases')}>
             <Icon name="compass" />
-            Explore case studies
+            Explorar casos de uso
           </Button>
         </div>
 

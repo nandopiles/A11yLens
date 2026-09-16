@@ -66,7 +66,7 @@ export function ProfileToggleRow({
               active ? 'text-primary' : 'text-ink-soft',
             ].join(' ')}
           >
-            {active ? 'On' : 'Off'}
+            {active ? 'Sí' : 'No'}
           </span>
         </div>
       </div>

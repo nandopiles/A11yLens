@@ -9,7 +9,7 @@ export function DashboardDemo() {
   return (
     <div className="mx-auto max-w-2xl" data-demo-goal="read-chart">
       <div className="mb-4 flex items-center justify-between">
-        <span className="text-base font-semibold text-slate-900">Revenue by segment</span>
+        <span className="text-base font-semibold text-slate-900">Ingresos por segmento</span>
         {/*
           A11Y-DEFECT: legend distinguishes series by color swatch only, no text labels —
           revealed by ColorBlindness — WCAG 1.4.1

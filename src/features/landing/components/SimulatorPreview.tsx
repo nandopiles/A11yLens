@@ -16,15 +16,15 @@ export function SimulatorPreview() {
       <div className="mb-6 flex flex-col justify-between gap-3 border-b border-hairline pb-4 sm:flex-row sm:items-end">
         <div>
           <span className="font-mono text-label-badge uppercase tracking-wider text-primary">
-            A11y inspection lab
+            Laboratorio de inspección de accesibilidad
           </span>
           <h2 id="simulator-heading" className="mt-1 text-headline-md text-ink">
-            Real-time comparison: payment flow
+            Comparación en tiempo real: flujo de pago
           </h2>
         </div>
         <Badge tone="warning">
           <span aria-hidden="true" className="h-2 w-2 rounded-full bg-amber-500" />
-          Applied filter: tritanopia + motor tremor
+          Filtro aplicado: tritanopia + temblor motor
         </Badge>
       </div>
 
@@ -41,21 +41,21 @@ export function SimulatorPreview() {
             </span>
             <span>https://checkout.retail-demo.dev/order/review</span>
           </div>
-          <span className="hidden sm:inline">Interactive slider coming soon</span>
+          <span className="hidden sm:inline">Control deslizante interactivo próximamente</span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2">
           <div className="border-b border-hairline p-6 md:border-b-0 md:border-r">
             <p className="mb-3 flex items-center gap-1.5 font-mono text-caption text-emerald-700">
               <span aria-hidden="true" className="h-2 w-2 rounded-full bg-emerald-500" />
-              Original view
+              Vista original
             </p>
             <PaymentCard />
           </div>
           <div className="bg-panel p-6">
             <p className="mb-3 flex items-center gap-1.5 font-mono text-caption text-rose-700">
               <span aria-hidden="true" className="h-2 w-2 rounded-full bg-rose-500" />
-              Simulated view
+              Vista simulada
             </p>
             <div className="opacity-90 blur-[0.4px] contrast-75 saturate-50">
               <PaymentCard muted />
@@ -77,12 +77,12 @@ function PaymentCard({ muted = false }: { muted?: boolean }) {
         </span>
         <span className={`text-headline-sm ${text}`}>Lumina Store</span>
       </div>
-      <p className="font-mono text-label-code uppercase text-ink-soft">Card number</p>
+      <p className="font-mono text-label-code uppercase text-ink-soft">Número de tarjeta</p>
       <p className={`font-mono text-body-md tracking-wider ${text}`}>•••• •••• •••• 9842</p>
       <div className="mt-3 flex items-center justify-between border-t border-hairline pt-3 text-body-sm">
         <span className="text-ink-soft">Total</span>
         <span className={muted ? 'font-semibold text-ink-soft' : 'font-semibold text-primary'}>
-          $129.00 USD
+          129,00 € EUR
         </span>
       </div>
     </div>

@@ -9,8 +9,8 @@ import type { AccessibilityProfile, ProfileMetadata } from '../engine/types';
 export class DeafnessProfile implements AccessibilityProfile {
   readonly metadata: ProfileMetadata = {
     id: 'deafness',
-    name: 'Deafness / no captions',
-    description: 'Mutes media and hides sound-only alerts to expose missing captions.',
+    name: 'Sordera / sin subtítulos',
+    description: 'Silencia el contenido multimedia y oculta las alertas solo sonoras para evidenciar la falta de subtítulos.',
     category: 'auditory',
   };
 

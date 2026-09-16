@@ -91,15 +91,15 @@ describe('SimulationPanel', () => {
     render(<SimulationPanel />);
     const tremorRow = screen.getByText('Motor tremor').closest('div')!.parentElement!
       .parentElement!;
-    fireEvent.click(within(tremorRow).getByLabelText(/severe/i));
+    fireEvent.click(within(tremorRow).getByLabelText(/severa/i));
     expect(setProfileOptions).toHaveBeenCalledWith('tremor', { intensity: 'severe' });
   });
 
   it('shows the active count and Reset calls reset()', () => {
     state.activeProfiles = [{ id: 'tremor' }, { id: 'low-vision' }];
     render(<SimulationPanel />);
-    expect(screen.getByText('2 active')).toBeInTheDocument();
-    fireEvent.click(screen.getByRole('button', { name: /reset/i }));
+    expect(screen.getByText('2 activos')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: /restablecer/i }));
     expect(reset).toHaveBeenCalledTimes(1);
   });
 });
